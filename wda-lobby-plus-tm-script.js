@@ -1,8 +1,7 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.04
+// @version      1.05
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. Don't use with "webcamdarts" color" and "webcamdarts font-size"
-// @description:fr Nouvelle affichage des joueurs dans le lobby ( grille de plus de joueurs) et mise en subrillance des joueurs de votre choix).
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu. Nie używaj z „webcamdarts” color” i „webcamdarts font-size”
 // @author       Edmund Kawalec
 // @match        https://www.webcamdarts.com/GameOn/Lobby*
@@ -12,7 +11,7 @@
 // @grant        GM_getValue
 // @grant        GM_addStyle
 // @require      https://greasyfork.org/scripts/395037-monkeyconfig-modern/code/MonkeyConfig%20Modern.js?version=764968
-// @namespace    https://github.com/ekawalec
+// @namespace    https://greasyfork.org/pl/users/1081222-edmund-kawalec
 // @license GIT
 // ==/UserScript==
 
