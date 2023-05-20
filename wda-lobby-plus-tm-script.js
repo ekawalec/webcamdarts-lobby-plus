@@ -471,9 +471,9 @@ function addGlobalStyle(css) {
 
     setUserPref3(
         'highlightStyle3',
-        'color: #f00; background-color: #ffebcd;',
+        'color: #000; background-color: #38d60c; border-radius: 6px 6px 6px 6px; padding: 1px 2px;',
         'Set Highlight Syle 01',
-        'Set the Highlight Style (use proper CSS)\r\Example color: www.color-hex.com\r\nExample:\r\ncolor: #f01466; font-weight: bold; background-color: #dedede;'
+        'Set the Highlight Style (use proper CSS)\r\Example color: www.color-hex.com\r\nExample:\r\ncolor: #000; background-color: #38d60c; border-radius: 6px 6px 6px 6px; padding: 1px 2px;'
     );
 
 
