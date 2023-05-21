@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.06
+// @version      1.07
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. Don't use with "webcamdarts" color" and "webcamdarts font-size"
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu. Nie używaj z „webcamdarts” color” i „webcamdarts font-size”
 // @author       Edmund Kawalec
@@ -153,7 +153,7 @@ var voiceCfg = new MonkeyConfig({
 
     addGlobalStyle('.rMenu.userli.avaiable{order:1;}')
     addGlobalStyle('.rMenu.userli.busy{order:2;}')
-    addGlobalStyle('.container{max-width: 670px;}')
+    addGlobalStyle('.container{max-width: 750px;}')
     addGlobalStyle('.Camtesting{position: absolute;right:40px;bottom:18px;float:right;}')
     addGlobalStyle('.logout {position: relative;top: 50px;}');
     addGlobalStyle('#current-user > div.currenuser-info > div.userinfo {position: relative;left:57px;bottom: 17px;height:100%;width:fit-content }');
@@ -179,7 +179,7 @@ var voiceCfg = new MonkeyConfig({
     addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter > div.split-view.k-pane.k-scrollable.k-widget.k-splitter > div.chat-users.k-pane.k-scrollable > div.bighonkinglogoutbutton > a {display:none;}');
     //TEST//
     addGlobalStyle('.messages-container {height: 23px;position: sticky;min-width: 100%;width: 100%;top: -4px;background-color: #302E2E;');
-    addGlobalStyle('#nav,.band.navigation{max-width: 670px;position:absolute;z-index:10; }');
+    addGlobalStyle('#nav,.band.navigation{max-width: 750px;position:absolute;z-index:10; }');
     addGlobalStyle('#nav{display:inline;border-bottom: 0px;}');
     addGlobalStyle('#current-user {height: auto;border: none;padding-top: 0px;padding-left: 0px;border-radius: 0px;padding-top: 0px;margin-right: 0px;}');
     addGlobalStyle('div.chat-window-container.k-pane.k-scrollable{padding:0px; }');
@@ -215,7 +215,7 @@ var voiceCfg = new MonkeyConfig({
     addGlobalStyle('.maincont{margin-top:23px;width:100%;margin-left:0px;}');
     addGlobalStyle('#tray{position:absolute;max-width:40%;}');
     addGlobalStyle('#mc-l{width: fit-content;}');
-    addGlobalStyle('#nav {position: fixed;  font: initial; }');
+    addGlobalStyle('#nav {position: fixed; font: initial;  font-family: "Open Sans", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif; }');
     addGlobalStyle('#tray {padding: 0 0 0 0; }');
     addGlobalStyle('.social_menu { display: none; }');
     addGlobalStyle('.motds a { font-size: 12px; }');
