@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.05
+// @version      1.06
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. Don't use with "webcamdarts" color" and "webcamdarts font-size"
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu. Nie używaj z „webcamdarts” color” i „webcamdarts font-size”
 // @author       Edmund Kawalec
@@ -29,28 +29,6 @@ var referenceNode1 = document.querySelector('#textMessage');
 // Insert the new node before the reference node
 referenceNode1.after(recbutton);
 
-var voiceCfg = new MonkeyConfig({
-    title: 'Voice configuration',
-    menuCommand: true,
-    params: {
-        voiceEnable: {
-            'label': 'Enabled',
-            type: 'checkbox',
-            default: true
-        },
-        voiceLanguage: {
-            'label': 'Language',
-            type: 'select',
-            choices: [ 'Polski', 'English', 'Deutsch' ],
-            default: 'English'
-        },
-        voiceVolume: {
-            'label': 'Volume [0-100]',
-            type: 'number',
-            'default': 50
-        }
-    }
-});
 
 var speaking = 1;
 var speech_voices;
@@ -65,6 +43,11 @@ var vCommands = {
         2 : 'Chatten Sie mit',
         3 : 'Chat with',
         15: 'Czat z',
+    },
+    'settingsSaved' : {
+        2 : 'Die Einstellungen wurden gespeichert',
+        3 : 'Settings have been saved',
+        15: 'Ustawienia zostały zapisane',
     }
 };
 
@@ -134,6 +117,35 @@ function addGlobalStyle(css) {
     style.innerHTML = css;
     head.appendChild(style);
 }
+
+
+var voiceCfg = new MonkeyConfig({
+    title: 'Voice configuration',
+    menuCommand: true,
+    params: {
+        voiceEnable: {
+            'label': 'Enabled',
+            type: 'checkbox',
+            default: true
+        },
+        voiceLanguage: {
+            'label': 'Language',
+            type: 'select',
+            choices: [ 'Polski', 'English', 'Deutsch' ],
+            default: 'English'
+        },
+        voiceVolume: {
+            'label': 'Volume [0-100]',
+            type: 'number',
+            'default': 50
+        },
+    },
+    onSave: function (values) {
+        say(vCommands.settingsSaved[getLang()]);
+    }
+});
+
+
 
 (function() {
     'use strict';
@@ -242,41 +254,33 @@ function addGlobalStyle(css) {
     'use strict';
 
     if (window.self !== window.top) { return; } // end execution if in a frame
-
-    // setting User Preferences
-    function setUserPref(varName, defaultVal, menuText, promtText, sep){
-        GM_registerMenuCommand(menuText, function() {
-            var val = prompt(promtText, GM_getValue(varName, defaultVal));
-            if (val === null)  { return; }  // end execution if clicked CANCEL
-            // prepare string of variables separated by the separator
-            if (sep && val){
-                var pat1 = new RegExp('\\s*' + sep + '+\\s*', 'g'); // trim space/s around separator & trim repeated separator
-                var pat2 = new RegExp('(?:^' + sep + '+|' + sep + '+$)', 'g'); // trim starting & trailing separator
-                val = val.replace(pat1, sep).replace(pat2, '');
+    var friendsCfg = new MonkeyConfig({
+        title: 'Friends configuration',
+        menuCommand: true,
+        params: {
+            keywordsFriends: {
+                'label': 'Friends names<br>comma separated:<br>nick 1, nick2 ,...',
+                type: 'text',
+                default: ''
+            },
+            highlightStyleFriends: {
+                'label': 'Set Highlight Style<br>(proper CSS)',
+                type: 'text',
+                default: 'color: #000; background-color: #38d60c; border-radius: 6px 6px 6px 6px; padding: 1px 2px;'
+            },
+        },
+        onSave: function (values) {
+            say(vCommands.settingsSaved[getLang()]);
+            if(!document.body.querySelector(".THmo")) {
+                THmo_doHighlight(document.body);
             }
-            val = val.replace(/\s{2,}/g, ' ').trim();    // remove multiple spaces and trim
-            GM_setValue(varName, val);
-            // Apply changes (immediately if there are no existing highlights, or upon reload to clear the old ones)
-            if(!document.body.querySelector(".THmo")) THmo_doHighlight(document.body);
-            else location.reload();
-        });
-    }
+            else {
+                location.reload();
+            }
+        }
+    });
 
-    // prepare UserPrefs
-    setUserPref(
-        'keywordsfriends',
-        'word 1,word 2,word 3',
-        'Set Friends List',
-        'Set keywordsfriends separated by comma\t\t\t\t\t\t\t\r\n\r\nExample:\r\nword 1,word 2,word 3',
-        ','
-    );
 
-    setUserPref(
-        'highlightStyleFriends',
-        'color: transparent; background-color: #ffebcd;',
-        'Set Highlight Style',
-        'Set the Highlight Style (use proper CSS)\r\Example color: www.color-hex.com\r\nExample:\r\ncolor: #f00; font-weight: bold; background-color: #ffe4b5;'
-    );
 
     // Add MutationObserver to catch content added dynamically
     var THmo_MutOb = (window.MutationObserver) ? window.MutationObserver : window.WebKitMutationObserver;
@@ -296,10 +300,17 @@ function addGlobalStyle(css) {
     }
     // Main workhorse routine
     function THmo_doHighlight(el){
-        var keywordsfriends = GM_getValue('keywordsfriends');
+
+        var keywordsfriends = friendsCfg.get('keywordsFriends');
         if(!keywordsfriends)  { return; }  // end execution if not found
-        var highlightStyleFriends = GM_getValue('highlightStyleFriends');
-        if (!highlightStyleFriends) highlightStyleFriends = "color:#00f; font-weight:bold; background-color: #0f0;"
+        let sep = ',';
+        var pat1 = new RegExp('\\s*' + sep + '+\\s*', 'g'); // trim space/s around separator & trim repeated separator
+        var pat2 = new RegExp('(?:^' + sep + '+|' + sep + '+$)', 'g'); // trim starting & trailing separator
+        keywordsfriends = keywordsfriends.replace(pat1, sep).replace(pat2, '');
+        keywordsfriends = keywordsfriends.replace(/\s{2,}/g, ' ').trim();
+
+
+        var highlightStyleFriends = friendsCfg.get('highlightStyleFriends');
 
         var rQuantifiers = /[-\/\\^$*+?.()|[\]{}]/g;
         keywordsfriends = "\\b" + keywordsfriends.replace(/\,/g, "\\b|\\b", '\\$&').split(',').join('|') + "\\b";
@@ -338,41 +349,31 @@ function addGlobalStyle(css) {
     THmo_doHighlight(document.body);
 
 
-
-    // setting User Preferences
-    function setUserPref2(varName, defaultVal, menuText, promtText, sep){
-        GM_registerMenuCommand(menuText, function() {
-            var val = prompt(promtText, GM_getValue(varName, defaultVal));
-            if (val === null)  { return; }  // end execution if clicked CANCEL
-            // prepare string of variables separated by the separator
-            if (sep && val){
-                var pat1 = new RegExp('\\s*' + sep + '+\\s*', 'g'); // trim space/s around separator & trim repeated separator
-                var pat2 = new RegExp('(?:^' + sep + '+|' + sep + '+$)', 'g'); // trim starting & trailing separator
-                val = val.replace(pat1, sep).replace(pat2, '');
+    var blackListCfg = new MonkeyConfig({
+        title: 'Black List configuration',
+        menuCommand: true,
+        params: {
+            keywordsBlack: {
+                'label': 'Black List names<br>comma separated:<br>nick 1, nick2 ,...',
+                type: 'text',
+                default: ''
+            },
+            highlightStyleBlack: {
+                'label': 'Set Highlight Style<br>(proper CSS)',
+                type: 'text',
+                default: 'color: #FFF; background-color: #000; border-radius: 6px 6px 6px 6px; padding: 1px 2px;'
+            },
+        },
+        onSave: function (values) {
+            say(vCommands.settingsSaved[getLang()]);
+            if(!document.body.querySelector(".THmo")) {
+                THmo_doHighlight2(document.body);
             }
-            val = val.replace(/\s{2,}/g, ' ').trim();    // remove multiple spaces and trim
-            GM_setValue(varName, val);
-            // Apply changes (immediately if there are no existing highlights, or upon reload to clear the old ones)
-            if(!document.body.querySelector(".THmo")) THmo_doHighlight2(document.body);
-            else location.reload();
-        });
-    }
-
-    // prepare UserPrefs
-    setUserPref2(
-        'keywordsblack',
-        'word 1,word 2,word 3',
-        'Set Black List',
-        'Set keywordsblack separated by comma\t\t\t\t\t\t\t\r\n\r\nExample:\r\nword 1,word 2,word 3',
-        ','
-    );
-
-    setUserPref2(
-        'highlightStyleBlack',
-        'color: #FFF; background-color: #000;',
-        'Set Black List Style',
-        'Set the Highlight Style (use proper CSS)\r\Example color: www.color-hex.com\r\nExample:\r\ncolor: #000; font-weight: bold; background-color: #FFF;'
-    );
+            else {
+                location.reload();
+            }
+        }
+    });
 
 
     // Add MutationObserver to catch content added dynamically
@@ -393,10 +394,17 @@ function addGlobalStyle(css) {
     }
     // Main workhorse routine
     function THmo_doHighlight2(el){
-        var keywordsblack = GM_getValue('keywordsblack');
+        var keywordsblack = blackListCfg.get('keywordsBlack');
         if(!keywordsblack)  { return; }  // end execution if not found
-        var highlightStyleBlack = GM_getValue('highlightStyleBlack');
-        if (!highlightStyleBlack) highlightStyleBlack = "color:#fff; font-weight:bold; background-color: #000;"
+
+        let sep = ',';
+        var pat1 = new RegExp('\\s*' + sep + '+\\s*', 'g'); // trim space/s around separator & trim repeated separator
+        var pat2 = new RegExp('(?:^' + sep + '+|' + sep + '+$)', 'g'); // trim starting & trailing separator
+        keywordsblack = keywordsblack.replace(pat1, sep).replace(pat2, '');
+        keywordsblack = keywordsblack.replace(/\s{2,}/g, ' ').trim();
+
+        var highlightStyleBlack = blackListCfg.get('highlightStyleBlack');
+
 
         var rQuantifiers = /[-\/\\^$*+?.()|[\]{}]/g;
         keywordsblack = "\\b" + keywordsblack.replace(/\,/g, "\\b|\\b", '\\$&').split(',').join('|') + "\\b";
@@ -441,41 +449,31 @@ function addGlobalStyle(css) {
 
     if (window.self !== window.top) { return; } // end execution if in a frame
 
-    // setting User Preferences
-    function setUserPref3(varName, defaultVal, menuText, promtText, sep){
-        GM_registerMenuCommand(menuText, function() {
-            var val = prompt(promtText, GM_getValue(varName, defaultVal));
-            if (val === null)  { return; }  // end execution if clicked CANCEL
-            // prepare string of variables separated by the separator
-            if (sep && val){
-                var pat1 = new RegExp('\\s*' + sep + '+\\s*', 'g'); // trim space/s around separator & trim repeated separator
-                var pat2 = new RegExp('(?:^' + sep + '+|' + sep + '+$)', 'g'); // trim starting & trailing separator
-                val = val.replace(pat1, sep).replace(pat2, '');
+    var personalCfg = new MonkeyConfig({
+        title: 'Personal configuration',
+        menuCommand: true,
+        params: {
+            keywordsPersonal: {
+                'label': 'Personal names<br>comma separated:<br>nick 1, nick2 ,...',
+                type: 'text',
+                default: ''
+            },
+            highlightStylePersonal: {
+                'label': 'Set Highlight Style<br>(proper CSS)',
+                type: 'text',
+                default: 'color:#f01466; font-weight:bold; background-color: #dedede; border-radius: 6px 6px 6px 6px; padding: 1px 2px;'
+            },
+        },
+        onSave: function (values) {
+            say(vCommands.settingsSaved[getLang()]);
+            if(!document.body.querySelector(".THmo")) {
+                THmo_doHighlight3(document.body);
             }
-            val = val.replace(/\s{2,}/g, ' ').trim();    // remove multiple spaces and trim
-            GM_setValue(varName, val);
-            // Apply changes (immediately if there are no existing highlights, or upon reload to clear the old ones)
-            if(!document.body.querySelector(".THmo")) THmo_doHighlight3(document.body);
-            else location.reload();
-        });
-    }
-
-    // prepare UserPrefs
-    setUserPref3(
-        'keywords3',
-        'word 1,word 2,word 3',
-        'Set Personal Style',
-        'Set keywords separated by comma\t\t\t\t\t\t\t\r\n\r\nExample:\r\nword 1,word 2,word 3',
-        ','
-    );
-
-    setUserPref3(
-        'highlightStyle3',
-        'color: #000; background-color: #38d60c; border-radius: 6px 6px 6px 6px; padding: 1px 2px;',
-        'Set Highlight Syle 01',
-        'Set the Highlight Style (use proper CSS)\r\Example color: www.color-hex.com\r\nExample:\r\ncolor: #000; background-color: #38d60c; border-radius: 6px 6px 6px 6px; padding: 1px 2px;'
-    );
-
+            else {
+                location.reload();
+            }
+        }
+    });
 
     // Add MutationObserver to catch content added dynamically
     var THmo_MutOb3 = (window.MutationObserver) ? window.MutationObserver : window.WebKitMutationObserver;
@@ -495,10 +493,16 @@ function addGlobalStyle(css) {
     }
     // Main workhorse routine
     function THmo_doHighlight3(el){
-        var keywords3 = GM_getValue('keywords3');
+
+        var keywords3 = personalCfg.get('keywordsPersonal');
         if(!keywords3)  { return; }  // end execution if not found
-        var highlightStyle3 = GM_getValue('highlightStyle3');
-        if (!highlightStyle3) highlightStyle3 = "color:#f01466; font-weight:bold; background-color: #dedede;"
+        let sep = ',';
+        var pat1 = new RegExp('\\s*' + sep + '+\\s*', 'g'); // trim space/s around separator & trim repeated separator
+        var pat2 = new RegExp('(?:^' + sep + '+|' + sep + '+$)', 'g'); // trim starting & trailing separator
+        keywords3 = keywords3.replace(pat1, sep).replace(pat2, '');
+        keywords3 = keywords3.replace(/\s{2,}/g, ' ').trim();
+
+        var highlightStyle3 = personalCfg.get('highlightStylePersonal');
 
         var rQuantifiers = /[-\/\\^$*+?.()|[\]{}]/g;
         keywords3 = "\\b" + keywords3.replace(/\,/g, "\\b|\\b", '\\$&').split(',').join('|') + "\\b";
