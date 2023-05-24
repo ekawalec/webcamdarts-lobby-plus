@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.07
+// @version      1.08
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. Don't use with "webcamdarts" color" and "webcamdarts font-size"
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu. Nie używaj z „webcamdarts” color” i „webcamdarts font-size”
 // @author       Edmund Kawalec
@@ -40,15 +40,20 @@ var languages = {
 
 var vCommands = {
     'chatWith' : {
-        2 : 'Chatten Sie mit',
-        3 : 'Chat with',
         15: 'Czat z',
+        3 : 'Chat with',
+        2 : 'Chatten Sie mit'
     },
     'settingsSaved' : {
-        2 : 'Die Einstellungen wurden gespeichert',
-        3 : 'Settings have been saved',
         15: 'Ustawienia zostały zapisane',
-    }
+        3 : 'Settings have been saved',
+        2 : 'Die Einstellungen wurden gespeichert'
+    },
+    'newMessage' : {
+        15: 'Nowa wiadomość od ',
+        3 : 'New message from ',
+        2 : 'neue Nachricht von '
+    },
 };
 
 
@@ -583,8 +588,42 @@ var voiceCfg = new MonkeyConfig({
     });
 
     $(document).on('click', '.hideMe', function(e) {
-        $(this).parent('.dropdown-content').hide('fast').delete();
+        $(this).parent('.dropdown-content').hide('fast').remove();
     });
 
-})();
 
+
+    var lastUnreadCounter = 0;
+    var unreadMessagesCounter = 0;
+    const intervalID = setInterval(chatTabsCheck, 7000); //setInterval(chatTabsCheck, 500, "Parameter 1", "Parameter 2");
+
+    function chatTabsCheck() {
+        let lis = $('.maincont ul.tabs').children("li");
+        let _c = lis.length;
+        let _unreadMessagesCounter = 0;
+        let _senders = [];
+        lis.each(function(index, value) {
+            let _a = $(this).find('a');
+            let _closeButton = $(this).find('.ui-icon.ui-icon-close');
+            if (_closeButton.length && !_a.hasClass('active') && _a.css('background-color') != 'rgb(245, 245, 245)') {
+                _unreadMessagesCounter++;
+                _senders.push(_a.text());
+            }
+        });
+        //console.log('_unreadMessagesCounter', _unreadMessagesCounter);
+        if (_unreadMessagesCounter == 0) {
+            lastUnreadCounter = _unreadMessagesCounter;
+        }
+        if (_unreadMessagesCounter > 0 && _unreadMessagesCounter != lastUnreadCounter) {
+            lastUnreadCounter = _unreadMessagesCounter;
+            $.each(_senders, function(index, value) {
+                //console.log(vCommands.newMessage[getLang()] + value);
+                setTimeout(function() {
+                    say(vCommands.newMessage[getLang()] + value);
+                }, 1000);
+            });
+        }
+
+    }
+
+})();
