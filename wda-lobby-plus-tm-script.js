@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.10
+// @version      1.11
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. Don't use with "webcamdarts" color" and "webcamdarts font-size"
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu. Nie używaj z „webcamdarts” color” i „webcamdarts font-size”
 // @author       Edmund Kawalec
@@ -13,6 +13,7 @@
 // @require      https://greasyfork.org/scripts/395037-monkeyconfig-modern/code/MonkeyConfig%20Modern.js?version=764968
 // @namespace    https://greasyfork.org/pl/users/1081222-edmund-kawalec
 // @downloadURL  https://greasyfork.org/scripts/466641-webcamdarts-lobby-plus/code/Webcamdarts%20Lobby%20%5Bplus%5D.user.js
+// @updateURL  https://greasyfork.org/scripts/466641-webcamdarts-lobby-plus/code/Webcamdarts%20Lobby%20%5Bplus%5D.user.js
 // @license GIT
 // ==/UserScript==
 
@@ -257,13 +258,9 @@ debugMode();
     addGlobalStyle('.full-game-result tr:nth-child(odd){background: #302E2E})');
     addGlobalStyle('.full-game-result td {text-transform: uppercase;})');
     addGlobalStyle('.full-game-result tr td {color: unset;text-align: right; font-weight:bold})');
-    addGlobalStyle('.full-game-result tr td + td { color: white;font-weight:unset})');
-    //addGlobalStyle('.info-handle {position: sticky;top: 59px;height:19px;width:51px;opacity: 0.7;margin-bottom: 1px;margin-left: 6px;line-height:14px;padding-top: 1px;padding-left: 1px;transform: rotate(0turn);background: content-box;border: none;text-transform: uppercase;}');
+    addGlobalStyle('.full-game-result tr td + td { color: white;font-weight:unset})');   
     addGlobalStyle('.info-handle {position: absolute; height: 0px;opacity: 0.7;top:unset;bottom:unset;width:0px; margin-bottom: unset;margin-left: unset;line-height: 20px;padding-top: 25%;transform: rotate(0turn);padding-bottom: unset;background: content-box;border: none;text-transform: uppercase;padding-left: unset;}');
     addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter > div.split-view.k-pane.k-scrollable.k-widget.k-splitter > div.lobby-game-info.k-pane{ z-index: 2;})');
-
-
-
 
 })();
 
