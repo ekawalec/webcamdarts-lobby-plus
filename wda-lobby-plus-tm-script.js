@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.11
+// @version      1.12
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. Don't use with "webcamdarts" color" and "webcamdarts font-size"
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu. Nie używaj z „webcamdarts” color” i „webcamdarts font-size”
 // @author       Edmund Kawalec
@@ -18,19 +18,9 @@
 // ==/UserScript==
 
 
-$('#current-user').append('<a class="Camtesting" href="https://game.webcamdarts.com/CamTest" target="_blank">Camtest</a>');
-$( "<a class='deco' href='javascript:doLogout()'>Logout</a>" ).appendTo( ".logout" );
-$('.messages-container').append('<div class="info-message"><a href="https://www.webcamdarts.com/forum/wda-archives/2018/1/some-help-for-new-members" target="_blank">New Member Help</a><a href="https://game.webcamdarts.com/CamTest" target="_blank">Cam Test</a><a href="https://www.webcamdarts.com/utils/smilies.html" target="_blank">Smilies</a><a href="https://www.facebook.com/groups/440581142678738/" target="_blank">Facebook Group</a><a href="https://game.webcamdarts.com/game" target="_blank">Rejoin Last Game</a></div>');
 
-var recbutton = document.createElement("div");
-recbutton.innerHTML = '<div id="recbutton" style="width:100%;height:25px; position:fixed; bottom:0px;font-size:smaller;margin-left:2px;white-space: nowrap;display: inline-block; " ><a href="https://chrome.google.com/webstore/detail/recordrtc/ndcljioonkecdnaaihodjgiliohngojp" target="_blank">Record your match (save & upload youtube) with RecordRTC</a> or <a href="https://chrome.google.com/webstore/detail/webrtc-desktop-sharing/nkemblooioekjnpfekmjhpgkackcajhg" target="_blank">Stream your match (max 10 friends) with WebRTC Sharing</a> Extension for Google Chrome</div>';
-
-// Get the reference node
-var referenceNode1 = document.querySelector('#textMessage');
-
-// Insert the new node before the reference node
-referenceNode1.after(recbutton);
-
+const UNREAD_MESSAGES_TIMEOUT = 1000;
+const TABS_CHECK_INTERVAL = 7000;
 
 var speaking = 1;
 var speech_voices;
@@ -57,7 +47,6 @@ var vCommands = {
         2 : 'neue Nachricht von '
     },
 };
-
 
 
 
@@ -166,6 +155,22 @@ function consoleLog(data) {
     }
 }
 debugMode();
+
+
+
+$('#current-user').append('<a class="Camtesting" href="https://game.webcamdarts.com/CamTest" target="_blank">Camtest</a>');
+$( "<a class='deco' href='javascript:doLogout()'>Logout</a>" ).appendTo( ".logout" );
+$('.messages-container').append('<div class="info-message"><a href="https://www.webcamdarts.com/forum/wda-archives/2018/1/some-help-for-new-members" target="_blank">New Member Help</a><a href="https://game.webcamdarts.com/CamTest" target="_blank">Cam Test</a><a href="https://www.webcamdarts.com/utils/smilies.html" target="_blank">Smilies</a><a href="https://www.facebook.com/groups/440581142678738/" target="_blank">Facebook Group</a><a href="https://game.webcamdarts.com/game" target="_blank">Rejoin Last Game</a></div>');
+
+var recbutton = document.createElement("div");
+recbutton.innerHTML = '<div id="recbutton" style="width:100%;height:25px; position:fixed; bottom:0px;font-size:smaller;margin-left:2px;white-space: nowrap;display: inline-block; " ><a href="https://chrome.google.com/webstore/detail/recordrtc/ndcljioonkecdnaaihodjgiliohngojp" target="_blank">Record your match (save & upload youtube) with RecordRTC</a> or <a href="https://chrome.google.com/webstore/detail/webrtc-desktop-sharing/nkemblooioekjnpfekmjhpgkackcajhg" target="_blank">Stream your match (max 10 friends) with WebRTC Sharing</a> Extension for Google Chrome</div>';
+
+// Get the reference node
+var referenceNode1 = document.querySelector('#textMessage');
+
+// Insert the new node before the reference node
+referenceNode1.after(recbutton);
+
 
 (function() {
     'use strict';
@@ -610,7 +615,7 @@ debugMode();
 
     var lastUnreadCounter = 0;
     var unreadMessagesCounter = 0;
-    const intervalID = setInterval(chatTabsCheck, 7000); //setInterval(chatTabsCheck, 500, "Parameter 1", "Parameter 2");
+    const intervalID = setInterval(chatTabsCheck, TABS_CHECK_INTERVAL); //setInterval(chatTabsCheck, 500, "Parameter 1", "Parameter 2");
 
     function chatTabsCheck() {
         let lis = $('.maincont ul.tabs').children("li");
@@ -634,7 +639,7 @@ debugMode();
             $.each(_senders, function(index, value) {
                 setTimeout(function() {
                     say(vCommands.newMessage[getLang()] + value);
-                }, 1000);
+                }, UNREAD_MESSAGES_TIMEOUT);
             });
         }
 
