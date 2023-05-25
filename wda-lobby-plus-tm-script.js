@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.08
+// @version      1.09
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. Don't use with "webcamdarts" color" and "webcamdarts font-size"
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu. Nie używaj z „webcamdarts” color” i „webcamdarts font-size”
 // @author       Edmund Kawalec
@@ -82,7 +82,7 @@ function say(m) { // language 3 en
         speechSynthesis.cancel();
         var msg = new SpeechSynthesisUtterance();
         var voices = window.speechSynthesis.getVoices();
-        //console.log(voices);
+        consoleLog(voices);
         var lang = getLang();
         msg.voice = voices[lang];
         msg.voiceURI = voices[lang].voiceURI;
@@ -91,22 +91,22 @@ function say(m) { // language 3 en
         msg.pitch = 1;
         msg.text = m;
         msg.lang = voices[lang].lang;
-        // console.log(msg);
+        consoleLog(msg);
         msg.onerror = function(e) {
             speechSynthesis.cancel();
         };
 
         msg.onpause = function(e) {
-            console.log('onpause in ' + e.elapsedTime + ' seconds.');
+            consoleLog('onpause in ' + e.elapsedTime + ' seconds.');
         }
 
         msg.onend = function(e) {
-            console.log('onend in ' + e.elapsedTime + ' seconds.');
+            consoleLog('onend in ' + e.elapsedTime + ' seconds.');
             speechSynthesis.cancel();
         };
 
         speechSynthesis.onerror = function(e) {
-            console.log('speechSynthesis onerror in ' + e.elapsedTime + ' seconds.');
+            consoleLog('speechSynthesis onerror in ' + e.elapsedTime + ' seconds.');
             speechSynthesis.cancel();
         };
         speechSynthesis.speak(msg);
@@ -150,7 +150,20 @@ var voiceCfg = new MonkeyConfig({
     }
 });
 
-
+var urlParams = new URLSearchParams(window.location.search);
+// custom logger - based on url param: 'debug=1'
+function debugMode() {
+    //var urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('debug') === true) {
+        localStorage.setItem('debug', urlParams.get('debug'));
+    }
+}
+function consoleLog(data) {
+    if (localStorage.getItem('debug') == 1) {
+        console.log(data);
+    }
+}
+debugMode();
 
 (function() {
     'use strict';
@@ -554,6 +567,7 @@ var voiceCfg = new MonkeyConfig({
     addGlobalStyle('.dropdown-content a:hover {color: #572525; text-decoration: underline}');
     addGlobalStyle('.dropdown-content .playerAvg { font-size: 11px; color: black;  padding: 6px 8px;  text-decoration: none;  display: inline-block; font-weight: 700; border-right: 1px solid #333; margin-right: 5px;}');
     addGlobalStyle('.dropdown-content .hideMe { font-size: 10px; color: black;  padding: 6px 8px;  text-decoration: none;  display: inline-block; font-weight: 700; border-left: 1px solid #333; margin-left: 5px; cursor: pointer;}');
+    addGlobalStyle('.ui-icon.ui-icon-close{-webkit-filter: grayscale(100%);filter: grayscale(100%);}');
 
     $(document).on('click', '#chatWindow .mc-u strong, #chatWindow .THmo', function(e) {
         // szukac w #users .rMenu.userli po value = e.target i pobierac data-uid
@@ -565,10 +579,13 @@ var voiceCfg = new MonkeyConfig({
         var _playerAvg = _player.find('p.fn').text();
 
         if (_username != $('.currenuser-info').attr('value') && dataItem!=undefined) {
-            $(e.target).removeClass('dropdown').addClass('dropdown');
-            _playerAvg = '<span class="playerAvg">'+_playerAvg+'</span>';
+            $(e.target).removeClass('dropdown').addClass('dropdown');            
             var _profileLink = '<a href="https://www.webcamdarts.com/GameOn/Game/MemberStats/'+_username+'" target="_blank">Profile</a>';
-            var _chatLink = '<a href="#" class="chatWithUser" data-username="'+_username+'">Chat</a>';
+            var _chatLink = '';
+            if (_player.length) {
+                _playerAvg = '<span class="playerAvg">'+_playerAvg+'</span>';
+                _chatLink = '<a href="#" class="chatWithUser" data-username="'+_username+'">Chat</a>';
+            }
             var _closeLink = '<span class="hideMe">x</span>' ;
             $(e.target).after('<div class="dropdown-content">' + _playerAvg + _chatLink + _profileLink + _closeLink + '</div>');
         }
@@ -610,14 +627,13 @@ var voiceCfg = new MonkeyConfig({
                 _senders.push(_a.text());
             }
         });
-        //console.log('_unreadMessagesCounter', _unreadMessagesCounter);
+        consoleLog('_unreadMessagesCounter: ' + _unreadMessagesCounter);
         if (_unreadMessagesCounter == 0) {
             lastUnreadCounter = _unreadMessagesCounter;
         }
         if (_unreadMessagesCounter > 0 && _unreadMessagesCounter != lastUnreadCounter) {
             lastUnreadCounter = _unreadMessagesCounter;
             $.each(_senders, function(index, value) {
-                //console.log(vCommands.newMessage[getLang()] + value);
                 setTimeout(function() {
                     say(vCommands.newMessage[getLang()] + value);
                 }, 1000);
@@ -627,3 +643,6 @@ var voiceCfg = new MonkeyConfig({
     }
 
 })();
+
+
+
