@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.09
+// @version      1.10
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. Don't use with "webcamdarts" color" and "webcamdarts font-size"
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu. Nie używaj z „webcamdarts” color” i „webcamdarts font-size”
 // @author       Edmund Kawalec
@@ -12,6 +12,8 @@
 // @grant        GM_addStyle
 // @require      https://greasyfork.org/scripts/395037-monkeyconfig-modern/code/MonkeyConfig%20Modern.js?version=764968
 // @namespace    https://greasyfork.org/pl/users/1081222-edmund-kawalec
+// @downloadURL  https://greasyfork.org/scripts/466641-webcamdarts-lobby-plus/code/Webcamdarts%20Lobby%20%5Bplus%5D.user.js
+// @updateURL    https://greasyfork.org/scripts/466641-webcamdarts-lobby-plus/code/Webcamdarts%20Lobby%20%5Bplus%5D.user.js
 // @license GIT
 // ==/UserScript==
 
@@ -174,7 +176,7 @@ debugMode();
     addGlobalStyle('.container{max-width: 750px;}')
     addGlobalStyle('.Camtesting{position: absolute;right:40px;bottom:18px;float:right;}')
     addGlobalStyle('.logout {position: relative;top: 50px;}');
-    addGlobalStyle('#current-user > div.currenuser-info > div.userinfo {position: relative;left:57px;bottom: 17px;height:100%;width:fit-content }');
+    addGlobalStyle('#current-user > div.currenuser-info > div.userinfo {position: relative;left:57px;bottom: 12px;height:100%;width:fit-content }');
     addGlobalStyle('#current-user > div.currenuser-info > div.userinfo > p:nth-child(2) {font-size: 14px;}');
     addGlobalStyle('#current-user > div.currenuser-info > div.userimage,#current-user > div.currenuser-info > div.userimage > img {position: absolute;top: 0px;width:54px;height:53px;  }');
     addGlobalStyle(' .info-message a {padding-right:5px;}');
