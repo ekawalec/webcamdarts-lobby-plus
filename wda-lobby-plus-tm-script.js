@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.12
+// @version      1.13
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. Don't use with "webcamdarts" color" and "webcamdarts font-size"
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu. Nie używaj z „webcamdarts” color” i „webcamdarts font-size”
 // @author       Edmund Kawalec
@@ -223,7 +223,7 @@ referenceNode1.after(recbutton);
     addGlobalStyle('#users{height:fit-content;}');
     addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter > div.split-view.k-pane.k-scrollable.k-widget.k-splitter{min-height:100%;}');
     addGlobalStyle('.cusermenu{position:absolute; top:0px;}');
-    addGlobalStyle('div#current-user {position: fixed;top:0px;width: 275px;right: 0px;height: 55px;padding-right: 4px;;z-index:9999992;}');
+    addGlobalStyle('div#current-user {position: fixed;top:2px;width: 275px;right: 2px;height: 55px;padding-right: 4px;;z-index:9999992;}');
     addGlobalStyle('#current-user > div > div.optionContainer > div {width:0px;display:none;position:fixedvisibility:hidden;}');
     addGlobalStyle('.optionContainer {position: fixed;width: 150px;top: 25px;right: 340px;visibility: visible;;}');
     addGlobalStyle('#current-user > div > div.optionContainer > div > div:nth-child(1) {position: fixed;right: 275px;height: 25px;width: fit-content;top: 24px;width: -moz-fit-content;}');
@@ -581,17 +581,17 @@ referenceNode1.after(recbutton);
         var dataItem = listView.dataSource.getByUid(_player.data("uid"));
         var _playerAvg = _player.find('p.fn').text();
 
-        if (_username != $('.currenuser-info').attr('value') && dataItem!=undefined) {
+        if (_username != $('.currenuser-info').attr('value') && ) {
             $(e.target).removeClass('dropdown').addClass('dropdown');            
-            var _profileLink = '<a href="https://www.webcamdarts.com/GameOn/Game/MemberStats/'+_username+'" target="_blank">Profile</a>';
+            var _profileLink = '<a href="//GameOn/Game/MemberStats/'+_username+'" target="_blank">Profile</a>';
             var _chatLink = '';
-            if (_player.length) {
+            if (dataItem!=undefined) {
                 _playerAvg = '<span class="playerAvg">'+_playerAvg+'</span>';
                 _chatLink = '<a href="#" class="chatWithUser" data-username="'+_username+'">Chat</a>';
             }
             var _closeLink = '<span class="hideMe">x</span>' ;
             $(e.target).after('<div class="dropdown-content">' + _playerAvg + _chatLink + _profileLink + _closeLink + '</div>');
-        }
+        } 
     });
     $(document).on('click', '#chatWindow .chatWithUser', function(e) {
         var _username = $(e.target).data('username');
