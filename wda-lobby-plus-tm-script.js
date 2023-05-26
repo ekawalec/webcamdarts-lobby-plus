@@ -581,7 +581,7 @@ referenceNode1.after(recbutton);
         var dataItem = listView.dataSource.getByUid(_player.data("uid"));
         var _playerAvg = _player.find('p.fn').text();
 
-        if (_username != $('.currenuser-info').attr('value') && ) {
+        if (_username != $('.currenuser-info').attr('value')) {
             $(e.target).removeClass('dropdown').addClass('dropdown');            
             var _profileLink = '<a href="//GameOn/Game/MemberStats/'+_username+'" target="_blank">Profile</a>';
             var _chatLink = '';
