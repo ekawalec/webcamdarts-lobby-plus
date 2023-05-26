@@ -583,11 +583,13 @@ referenceNode1.after(recbutton);
 
         if (_username != $('.currenuser-info').attr('value')) {
             $(e.target).removeClass('dropdown').addClass('dropdown');            
-            var _profileLink = '<a href="//GameOn/Game/MemberStats/'+_username+'" target="_blank">Profile</a>';
+            var _profileLink = '<a href="https://www.webcamdarts.com/GameOn/Game/MemberStats/'+_username+'" target="_blank">Profile</a>';
             var _chatLink = '';
             if (dataItem!=undefined) {
                 _playerAvg = '<span class="playerAvg">'+_playerAvg+'</span>';
                 _chatLink = '<a href="#" class="chatWithUser" data-username="'+_username+'">Chat</a>';
+            } else {
+                _playerAvg = '<span class="playerAvg">offline</span>';
             }
             var _closeLink = '<span class="hideMe">x</span>' ;
             $(e.target).after('<div class="dropdown-content">' + _playerAvg + _chatLink + _profileLink + _closeLink + '</div>');
