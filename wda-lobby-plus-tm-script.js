@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.13
+// @version      1.14
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. Don't use with "webcamdarts" color" and "webcamdarts font-size"
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu. Nie używaj z „webcamdarts” color” i „webcamdarts font-size”
 // @author       Edmund Kawalec
@@ -142,11 +142,11 @@ var voiceCfg = new MonkeyConfig({
 });
 
 var urlParams = new URLSearchParams(window.location.search);
-// custom logger - based on url param: 'debug=1'
 function debugMode() {
-    //var urlParams = new URLSearchParams(window.location.search);
     if (urlParams.has('debug') === true) {
         localStorage.setItem('debug', urlParams.get('debug'));
+    } else {
+        localStorage.setItem('debug', 0);
     }
 }
 function consoleLog(data) {
