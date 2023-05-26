@@ -591,7 +591,7 @@ referenceNode1.after(recbutton);
             }
             var _closeLink = '<span class="hideMe">x</span>' ;
             $(e.target).after('<div class="dropdown-content">' + _playerAvg + _chatLink + _profileLink + _closeLink + '</div>');
-        } 
+        }
     });
     $(document).on('click', '#chatWindow .chatWithUser', function(e) {
         var _username = $(e.target).data('username');
