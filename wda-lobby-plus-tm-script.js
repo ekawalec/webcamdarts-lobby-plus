@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.16
+// @version      1.17
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. Don't use with "webcamdarts" color" and "webcamdarts font-size"
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu. Nie używaj z „webcamdarts” color” i „webcamdarts font-size”
 // @author       Edmund Kawalec
@@ -197,7 +197,7 @@ referenceNode1.after(recbutton);
     //TEST avec search bar//
     addGlobalStyle('.messages-container {height: 23px;position: sticky;min-width: 100%;width: 100%;top: -4px;background-color: #302E2E;');
     addGlobalStyle(' .info-message {font-weight: bold;background-color:#302E2E;font-size:14px;width: 100%;overflow-x: auto;overflow-y: hidden;white-space: nowrap;display: inline-block; }');
-    addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter > div.split-view.k-pane.k-scrollable.k-widget.k-splitter > div.chat-users.k-pane.k-scrollable > div:nth-child(1){font-size:13px;height:31px;position: fixed;top:60px;right:7px;background-color:#302E2E;}');
+    addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter > div.split-view.k-pane.k-scrollable.k-widget.k-splitter > div.chat-users.k-pane.k-scrollable > div:nth-child(1){font-size:13px;height:31px;position: fixed;top:61px;left: calc(70vw);background-color:#302E2E;}');
     addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter{min-height: 100%;position: fixed;}');
     addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter > div.split-view.k-pane.k-scrollable.k-widget.k-splitter {min-height: 82.5%;}');
     addGlobalStyle('.bighonkinglogoutbutton{display:none; }');
@@ -573,6 +573,13 @@ referenceNode1.after(recbutton);
     addGlobalStyle('.ui-icon.ui-icon-close{-webkit-filter: grayscale(100%);filter: grayscale(100%);}');
     addGlobalStyle('.chat-users.k-pane{width: calc(50vw) !important; left: calc(50vw) !important;}');
     addGlobalStyle('.lobby-game-info.k-pane {top: 20px !important; left: calc(50vw - 220px) !important;}');
+    addGlobalStyle(' @media screen and (max-width: 767px) {  .userli {    min-width: 100%; } }');
+    addGlobalStyle(' @media screen and (min-width: 768px) and (max-width: 1024px) {  .userli {    min-width: 45%; } }');
+    addGlobalStyle(' @media screen and (min-width: 1025px) and (max-width: 1199px) {  .userli {    min-width: 47%; } }');
+    addGlobalStyle(' @media screen and (min-width: 1200px) and (max-width: 1350px) {  .userli {    min-width: 30%; } }');
+    addGlobalStyle(' @media screen and (min-width: 1351px) {  .userli {    min-width: 23%; } }');
+    addGlobalStyle('.info-handle {left: calc(50vw + 5px) !important}');
+    
 
     $(document).on('click', '#chatWindow .mc-u strong, #chatWindow .THmo', function(e) {
         // szukac w #users .rMenu.userli po value = e.target i pobierac data-uid
