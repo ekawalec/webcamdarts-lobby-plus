@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.23.1
+// @version      1.24
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. Don't use with "webcamdarts" color" and "webcamdarts font-size"
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu. Nie używaj z „webcamdarts” color” i „webcamdarts font-size”
 // @author       Edmund Kawalec
@@ -16,6 +16,7 @@
 // @updateURL  https://greasyfork.org/scripts/466641-webcamdarts-lobby-plus/code/Webcamdarts%20Lobby%20%5Bplus%5D.user.js
 // @license GIT
 // ==/UserScript==
+
 
 
 const UNREAD_MESSAGES_TIMEOUT = 1000;
@@ -176,10 +177,11 @@ referenceNode1.after(recbutton);
 (function() {
     'use strict';
 
-    addGlobalStyle('.rMenu.userli.avaiable{order:1;}')
-    addGlobalStyle('.rMenu.userli.busy{order:2;}')
-    addGlobalStyle('.container{max-width: 750px;}')
-    addGlobalStyle('.Camtesting{position: absolute;right:40px;bottom:18px;float:right;}')
+    addGlobalStyle('@import "https://cdn.lineicons.com/4.0/lineicons.css"');
+    addGlobalStyle('.rMenu.userli.avaiable{order:1;}');
+    addGlobalStyle('.rMenu.userli.busy{order:2;}');
+    addGlobalStyle('.container{max-width: 750px;}');
+    addGlobalStyle('.Camtesting{position: absolute;right:40px;bottom:18px;float:right;}');
     addGlobalStyle('.logout {position: relative;top: 50px;}');
     addGlobalStyle('#current-user > div.currenuser-info > div.userinfo {position: relative;left:57px;bottom: 12px;height:100%;width:fit-content }');
     addGlobalStyle('#current-user > div.currenuser-info > div.userinfo > p:nth-child(2) {font-size: 14px;}');
@@ -271,9 +273,12 @@ referenceNode1.after(recbutton);
     addGlobalStyle('.dropdown {position: relative;  display: inline-block;} ');
     addGlobalStyle('.dropdown-content {display: inline-flex;  position: relative;  background-color: #f1f1f1;  min-width: 70px;  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);  z-index: 1; margin-left: 10px; margin-right: 10px; border-radius: 6px 6px 6px 6px; }');
     addGlobalStyle('.dropdown-content a { font-size: 11px; color: black;  padding: 6px 8px;  text-decoration: none;  display: inline-block; font-weight: 700;}');
-    addGlobalStyle('.dropdown-content a:hover {color: #572525; text-decoration: underline}');
+    addGlobalStyle('.dropdown-content a:hover {color: #572525; text-decoration: none}');
     addGlobalStyle('.dropdown-content .playerAvg { font-size: 11px; color: black;  padding: 6px 8px;  text-decoration: none;  display: inline-block; font-weight: 700; border-right: 1px solid #333; margin-right: 5px;}');
     addGlobalStyle('.dropdown-content .hideMe { font-size: 10px; color: black;  padding: 6px 8px;  text-decoration: none;  display: inline-block; font-weight: 700; border-left: 1px solid #333; margin-left: 5px; cursor: pointer;}');
+    addGlobalStyle('.dropdown-content a.chatWithUser:hover {color: #3857FA; text-decoration: none}');
+    addGlobalStyle('.dropdown-content a.userProfile:hover {color: #D614EC; text-decoration: none}');
+
     addGlobalStyle('.ui-icon.ui-icon-close{-webkit-filter: grayscale(100%);filter: grayscale(100%);}');
     addGlobalStyle('.chat-users.k-pane{width: calc(50vw) !important; left: calc(50vw) !important;}');
     addGlobalStyle('.lobby-game-info.k-pane {top: 20px !important; left: calc(50vw - 220px) !important;}');
@@ -595,11 +600,11 @@ referenceNode1.after(recbutton);
 
         if (_username != $('.currenuser-info').attr('value')) {
             $(e.target).removeClass('dropdown').addClass('dropdown');
-            var _profileLink = '<a href="https://www.webcamdarts.com/GameOn/Game/MemberStats/'+_username+'" target="_blank">Profile</a>';
+            var _profileLink = '<a class="userProfile" href="https://www.webcamdarts.com/GameOn/Game/MemberStats/'+_username+'" target="_blank"><i class="lni lni-user"></i> Profile</a>';
             var _chatLink = '';
             if (dataItem!=undefined) {
                 _playerAvg = '<span class="playerAvg">'+_playerAvg+'</span>';
-                _chatLink = '<a href="#" class="chatWithUser" data-username="'+_username+'">Chat</a>';
+                _chatLink = '<a href="#" class="chatWithUser" data-username="'+_username+'"><i class="lni lni-comments"></i> Chat</a>';
             } else {
                 _playerAvg = '<span class="playerAvg">offline</span>';
             }
