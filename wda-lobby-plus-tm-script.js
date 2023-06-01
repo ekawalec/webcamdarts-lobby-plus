@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.21
+// @version      1.22
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. Don't use with "webcamdarts" color" and "webcamdarts font-size"
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu. Nie używaj z „webcamdarts” color” i „webcamdarts font-size”
 // @author       Edmund Kawalec
@@ -208,7 +208,6 @@ referenceNode1.after(recbutton);
     addGlobalStyle('#nav{display:inline;border-bottom: 0px;}');
     addGlobalStyle('#current-user {height: auto;border: none;padding-top: 0px;padding-left: 0px;border-radius: 0px;padding-top: 0px;margin-right: 0px;}');
     addGlobalStyle('div.chat-window-container.k-pane.k-scrollable{padding:0px; }');
-    addGlobalStyle('#users{height:fit-content;min-height: 90%; zoom: 100% !important;}');
     addGlobalStyle('.chat-messagebar{margin-left:0px;}');
     addGlobalStyle('#textMessage{width:calc(50vw - 250px) !important;margin-left:0px;margin-top: 0px;margin-bottom: 0px;float:left; }');
     addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter > div.chat-messagebar.k-pane{margin-top:-120px;margin-left:0px;}');
@@ -216,10 +215,10 @@ referenceNode1.after(recbutton);
     addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter > div:nth-child(4) {display: none; }');
     addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter{min-height:100%;}');
     addGlobalStyle('#lobby, .lobby {min-height:100%;}');
-    addGlobalStyle('#users {margin-top:28px; padding-top:0px;margin-top:18px;position:fixed;right: 0px;min-height: 77.2%;min-width: max-content; box-sizing:border-box; height:200px; background-color: #8cffa0;}');
+    addGlobalStyle('#users {height:fit-content;min-height: 90%; zoom: 100% !important;}');
+    addGlobalStyle('#users {margin-top:28px; padding-top:0px;margin-top:18px;position:fixed;right: 0px;min-width: max-content; box-sizing:border-box; height:200px; background-color: #8cffa0;}');
     //grille joueurs
-    addGlobalStyle('#users {display: flex;flex-wrap: wrap;place-content: flex-start;height:fit-content;right: 0px;box-sizing: border-box;min-width: 50%;max-width: 50%;zoom: 83%;}');
-    addGlobalStyle('#users{height:fit-content;}');
+    addGlobalStyle('#users {display: flex;flex-wrap: wrap;place-content: flex-start;right: 0px;box-sizing: border-box;min-width: 50%;max-width: 50%;zoom: 83%;}');
     addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter > div.split-view.k-pane.k-scrollable.k-widget.k-splitter{min-height:100%;}');
     addGlobalStyle('.cusermenu{position:absolute; top:0px;}');
     addGlobalStyle('div#current-user {position: fixed;top:2px;width: 275px;right: 2px;height: 55px;padding-right: 4px;;z-index:9999992;}');
