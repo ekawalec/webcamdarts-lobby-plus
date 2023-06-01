@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.18
+// @version      1.19
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. Don't use with "webcamdarts" color" and "webcamdarts font-size"
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu. Nie używaj z „webcamdarts” color” i „webcamdarts font-size”
 // @author       Edmund Kawalec
@@ -248,8 +248,10 @@ referenceNode1.after(recbutton);
     addGlobalStyle('.username {display: none; }');
     addGlobalStyle('.mc-l { width:100%; }');
     addGlobalStyle('#current-user .userinfo p {margin-top: 0px;}');
-    addGlobalStyle('.rMenu.userli .userinfo p {font-size: 1.3em !important;}');
-    addGlobalStyle('.rMenu.userli .userinfo p.fn {font-size: 1em;}');
+    addGlobalStyle('.rMenu.userli .userinfo  {width: auto; max-width: 150px; position: relative;}');
+    addGlobalStyle('.rMenu.userli .userinfo p {font-size: 1.25em !important;}');
+    addGlobalStyle('.rMenu.userli .userinfo p:first-child {text-indent: 15px;}');
+    addGlobalStyle('.rMenu.userli .userinfo p.fn {font-size: 1.15em !important; padding-top: 2px;}');
     addGlobalStyle('.summary .inplay.title .THmo{    width: auto;})');
 
     addGlobalStyle('.game-result{margin-left:0px;padding:2px;min-width:540px;max-width:100%;padding-bottom: 5px;opacity:1;}');
@@ -576,6 +578,7 @@ referenceNode1.after(recbutton);
     addGlobalStyle(' @media screen and (min-width: 1200px) and (max-width: 1350px) {  .userli {    min-width: 30%; } }');
     addGlobalStyle(' @media screen and (min-width: 1351px) {  .userli {    min-width: 23%; } }');
     addGlobalStyle('.info-handle {left: calc(50vw + 5px) !important; line-height: 23px;}');
+    addGlobalStyle('#users .userli .userinfo .user-camapproved, #users .userli .userinfo .user-camnotapproved {position: absolute; top: 15px; left: 45px; } ');
     
 
     $(document).on('click', '#chatWindow .mc-u strong, #chatWindow .THmo', function(e) {
