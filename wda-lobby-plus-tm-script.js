@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.23
+// @version      1.23.1
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. Don't use with "webcamdarts" color" and "webcamdarts font-size"
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu. Nie używaj z „webcamdarts” color” i „webcamdarts font-size”
 // @author       Edmund Kawalec
@@ -209,7 +209,7 @@ referenceNode1.after(recbutton);
     addGlobalStyle('#current-user {height: auto;border: none;padding-top: 0px;padding-left: 0px;border-radius: 0px;padding-top: 0px;margin-right: 0px;}');
     addGlobalStyle('div.chat-window-container.k-pane.k-scrollable{padding:0px; }');
     addGlobalStyle('.chat-messagebar{margin-left:0px;}');
-    addGlobalStyle('#textMessage{width:calc(50vw - 250px) !important;margin-left:0px;margin-top: 0px;margin-bottom: 0px;float:left; }');
+    addGlobalStyle('#textMessage{width:calc(50vw - 250px) !important; margin-left: 20px !important; margin-top: 0px !important; margin-bottom: 0px; float:left; height: 37px !important}');
     addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter > div.chat-messagebar.k-pane{margin-top:-120px;margin-left:0px;}');
     addGlobalStyle('.k-state-default{border-color: #2b2b2b00; }');
     addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter > div:nth-child(4) {display: none; }');
