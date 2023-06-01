@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.19
+// @version      1.20
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. Don't use with "webcamdarts" color" and "webcamdarts font-size"
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu. Nie używaj z „webcamdarts” color” i „webcamdarts font-size”
 // @author       Edmund Kawalec
@@ -162,17 +162,20 @@ $( "<a class='deco' href='javascript:doLogout()'>Logout</a>" ).appendTo( ".logou
 $('.messages-container').append('<div class="info-message"><a href="https://www.webcamdarts.com/forum/wda-archives/2018/1/some-help-for-new-members" target="_blank">New Member Help</a><a href="https://game.webcamdarts.com/CamTest" target="_blank">Cam Test</a><a href="https://www.webcamdarts.com/utils/smilies.html" target="_blank">Smilies</a><a href="https://www.facebook.com/groups/440581142678738/" target="_blank">Facebook Group</a><a href="https://game.webcamdarts.com/game" target="_blank">Rejoin Last Game</a></div>');
 
 var recbutton = document.createElement("div");
-recbutton.innerHTML = '<div id="recbutton" style="width:100%;height:25px; position:fixed; bottom:0px;font-size:smaller;margin-left:2px;white-space: nowrap;display: inline-block; " ><a href="https://chrome.google.com/webstore/detail/recordrtc/ndcljioonkecdnaaihodjgiliohngojp" target="_blank">Record your match (save & upload youtube) with RecordRTC</a> or <a href="https://chrome.google.com/webstore/detail/webrtc-desktop-sharing/nkemblooioekjnpfekmjhpgkackcajhg" target="_blank">Stream your match (max 10 friends) with WebRTC Sharing</a> Extension for Google Chrome</div>';
+recbutton.innerHTML = '<div id="recbutton" style="width:100%;height:25px; position:fixed; bottom:0px;font-size:smaller;margin-left:2px;white-space: nowrap;display: block; padding-top: 8px; padding-left: 18px; " ><a href="https://chrome.google.com/webstore/detail/recordrtc/ndcljioonkecdnaaihodjgiliohngojp" target="_blank">Record your match (save & upload youtube) with RecordRTC</a> or <a href="https://chrome.google.com/webstore/detail/webrtc-desktop-sharing/nkemblooioekjnpfekmjhpgkackcajhg" target="_blank">Stream your match (max 10 friends) with WebRTC Sharing</a> Extension for Google Chrome</div>';
 
 // Get the reference node
-var referenceNode1 = document.querySelector('#textMessage');
+var referenceNode1 = document.querySelector('#SendMessage');
 
 // Insert the new node before the reference node
 referenceNode1.after(recbutton);
 
 
+
+// CSS refactor
 (function() {
     'use strict';
+
     addGlobalStyle('.rMenu.userli.avaiable{order:1;}')
     addGlobalStyle('.rMenu.userli.busy{order:2;}')
     addGlobalStyle('.container{max-width: 750px;}')
@@ -207,9 +210,8 @@ referenceNode1.after(recbutton);
     addGlobalStyle('div.chat-window-container.k-pane.k-scrollable{padding:0px; }');
     addGlobalStyle('#users{height:fit-content;min-height: 78%; zoom: 100% !important;}');
     addGlobalStyle('.chat-messagebar{margin-left:0px;}');
-    addGlobalStyle('#textMessage{min-width:100%;margin-left:0px;}');
+    addGlobalStyle('#textMessage{width:calc(50vw - 250px) !important;margin-left:0px;margin-top: 0px;margin-bottom: 0px;float:left; }');
     addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter > div.chat-messagebar.k-pane{margin-top:-120px;margin-left:0px;}');
-    addGlobalStyle('.chat-container .chat-messagebar #textMessage {;margin-left:0px;}');
     addGlobalStyle('.k-state-default{border-color: #2b2b2b00; }');
     addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter > div:nth-child(4) {display: none; }');
     addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter{min-height:100%;}');
@@ -248,10 +250,10 @@ referenceNode1.after(recbutton);
     addGlobalStyle('.username {display: none; }');
     addGlobalStyle('.mc-l { width:100%; }');
     addGlobalStyle('#current-user .userinfo p {margin-top: 0px;}');
-    addGlobalStyle('.rMenu.userli .userinfo  {width: auto; max-width: 150px; position: relative;}');
+    addGlobalStyle('.rMenu.userli .userinfo  {max-width: 150px; position: relative;}');
     addGlobalStyle('.rMenu.userli .userinfo p {font-size: 1.25em !important;}');
-    addGlobalStyle('.rMenu.userli .userinfo p:first-child {text-indent: 15px;}');
-    addGlobalStyle('.rMenu.userli .userinfo p.fn {font-size: 1.15em !important; padding-top: 2px;}');
+    addGlobalStyle('.rMenu.userli .userinfo p:first-child {text-indent: 17px;}');
+    addGlobalStyle('.rMenu.userli .userinfo p.fn {font-size: 1.15em !important; padding-top: 3px;}');
     addGlobalStyle('.summary .inplay.title .THmo{    width: auto;})');
 
     addGlobalStyle('.game-result{margin-left:0px;padding:2px;min-width:540px;max-width:100%;padding-bottom: 5px;opacity:1;}');
@@ -262,9 +264,31 @@ referenceNode1.after(recbutton);
     addGlobalStyle('.full-game-result tr:nth-child(odd){background: #302E2E})');
     addGlobalStyle('.full-game-result td {text-transform: uppercase;})');
     addGlobalStyle('.full-game-result tr td {color: unset;text-align: right; font-weight:bold})');
-    addGlobalStyle('.full-game-result tr td + td { color: white;font-weight:unset})');   
+    addGlobalStyle('.full-game-result tr td + td { color: white;font-weight:unset})');
     addGlobalStyle('.info-handle {position: absolute; height: 0px;opacity: 0.7;top:unset;bottom:unset;width:0px; margin-bottom: unset;margin-left: unset;line-height: 20px;padding-top: 25%;transform: rotate(0turn);padding-bottom: unset;background: content-box;border: none;text-transform: uppercase;padding-left: unset;}');
     addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter > div.split-view.k-pane.k-scrollable.k-widget.k-splitter > div.lobby-game-info.k-pane{ z-index: 2;})');
+
+    // chat window: click on USER NICKNAME opens privChat - logged user click themseve opens profile stats
+    addGlobalStyle('.mc-u strong:hover{cursor:pointer;text-decoration:underline;} #chatWindow .THmo:hover{text-decoration:underline;cursor:pointer;}');
+    addGlobalStyle('.dropdown {position: relative;  display: inline-block;} ');
+    addGlobalStyle('.dropdown-content {display: inline-flex;  position: relative;  background-color: #f1f1f1;  min-width: 70px;  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);  z-index: 1; margin-left: 10px; margin-right: 10px; border-radius: 6px 6px 6px 6px; }');
+    addGlobalStyle('.dropdown-content a { font-size: 11px; color: black;  padding: 6px 8px;  text-decoration: none;  display: inline-block; font-weight: 700;}');
+    addGlobalStyle('.dropdown-content a:hover {color: #572525; text-decoration: underline}');
+    addGlobalStyle('.dropdown-content .playerAvg { font-size: 11px; color: black;  padding: 6px 8px;  text-decoration: none;  display: inline-block; font-weight: 700; border-right: 1px solid #333; margin-right: 5px;}');
+    addGlobalStyle('.dropdown-content .hideMe { font-size: 10px; color: black;  padding: 6px 8px;  text-decoration: none;  display: inline-block; font-weight: 700; border-left: 1px solid #333; margin-left: 5px; cursor: pointer;}');
+    addGlobalStyle('.ui-icon.ui-icon-close{-webkit-filter: grayscale(100%);filter: grayscale(100%);}');
+    addGlobalStyle('.chat-users.k-pane{width: calc(50vw) !important; left: calc(50vw) !important;}');
+    addGlobalStyle('.lobby-game-info.k-pane {top: 20px !important; left: calc(50vw - 220px) !important;}');
+    addGlobalStyle(' @media screen and (max-width: 767px) {  .userli {    min-width: 100%; } }');
+    addGlobalStyle(' @media screen and (min-width: 768px) and (max-width: 1024px) {  .userli {    min-width: 45%; } }');
+    addGlobalStyle(' @media screen and (min-width: 1025px) and (max-width: 1199px) {  .userli {    min-width: 47%; } }');
+    addGlobalStyle(' @media screen and (min-width: 1200px) and (max-width: 1350px) {  .userli {    min-width: 30%; } }');
+    addGlobalStyle(' @media screen and (min-width: 1351px) {  .userli {    min-width: 23%; } }');
+    addGlobalStyle('.info-handle {left: calc(50vw + 5px) !important; line-height: 23px;}');
+    addGlobalStyle('#users .userli .userinfo .user-camapproved, #users .userli .userinfo .user-camnotapproved {position: absolute; top: 15px; left: 45px; } ');
+    addGlobalStyle('.chat-container .chat-messagebar #SendMessage  {width: 100px; display: block; float: left; max-width: 100px; } ');
+
+
 
 })();
 
@@ -561,25 +585,6 @@ referenceNode1.after(recbutton);
 // chat window manage
 (function() {
 
-    // chat window: click on USER NICKNAME opens privChat - logged user click themseve opens profile stats
-    addGlobalStyle('.mc-u strong:hover{cursor:pointer;text-decoration:underline;} #chatWindow .THmo:hover{text-decoration:underline;cursor:pointer;}');
-    addGlobalStyle('.dropdown {position: relative;  display: inline-block;} ');
-    addGlobalStyle('.dropdown-content {display: inline-flex;  position: relative;  background-color: #f1f1f1;  min-width: 70px;  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);  z-index: 1; margin-left: 10px; margin-right: 10px; border-radius: 6px 6px 6px 6px; }');
-    addGlobalStyle('.dropdown-content a { font-size: 11px; color: black;  padding: 6px 8px;  text-decoration: none;  display: inline-block; font-weight: 700;}');
-    addGlobalStyle('.dropdown-content a:hover {color: #572525; text-decoration: underline}');
-    addGlobalStyle('.dropdown-content .playerAvg { font-size: 11px; color: black;  padding: 6px 8px;  text-decoration: none;  display: inline-block; font-weight: 700; border-right: 1px solid #333; margin-right: 5px;}');
-    addGlobalStyle('.dropdown-content .hideMe { font-size: 10px; color: black;  padding: 6px 8px;  text-decoration: none;  display: inline-block; font-weight: 700; border-left: 1px solid #333; margin-left: 5px; cursor: pointer;}');
-    addGlobalStyle('.ui-icon.ui-icon-close{-webkit-filter: grayscale(100%);filter: grayscale(100%);}');
-    addGlobalStyle('.chat-users.k-pane{width: calc(50vw) !important; left: calc(50vw) !important;}');
-    addGlobalStyle('.lobby-game-info.k-pane {top: 20px !important; left: calc(50vw - 220px) !important;}');
-    addGlobalStyle(' @media screen and (max-width: 767px) {  .userli {    min-width: 100%; } }');
-    addGlobalStyle(' @media screen and (min-width: 768px) and (max-width: 1024px) {  .userli {    min-width: 45%; } }');
-    addGlobalStyle(' @media screen and (min-width: 1025px) and (max-width: 1199px) {  .userli {    min-width: 47%; } }');
-    addGlobalStyle(' @media screen and (min-width: 1200px) and (max-width: 1350px) {  .userli {    min-width: 30%; } }');
-    addGlobalStyle(' @media screen and (min-width: 1351px) {  .userli {    min-width: 23%; } }');
-    addGlobalStyle('.info-handle {left: calc(50vw + 5px) !important; line-height: 23px;}');
-    addGlobalStyle('#users .userli .userinfo .user-camapproved, #users .userli .userinfo .user-camnotapproved {position: absolute; top: 15px; left: 45px; } ');
-    
 
     $(document).on('click', '#chatWindow .mc-u strong, #chatWindow .THmo', function(e) {
         // szukac w #users .rMenu.userli po value = e.target i pobierac data-uid
@@ -591,7 +596,7 @@ referenceNode1.after(recbutton);
         var _playerAvg = _player.find('p.fn').text();
 
         if (_username != $('.currenuser-info').attr('value')) {
-            $(e.target).removeClass('dropdown').addClass('dropdown');            
+            $(e.target).removeClass('dropdown').addClass('dropdown');
             var _profileLink = '<a href="https://www.webcamdarts.com/GameOn/Game/MemberStats/'+_username+'" target="_blank">Profile</a>';
             var _chatLink = '';
             if (dataItem!=undefined) {
