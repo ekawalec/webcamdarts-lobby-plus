@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.22
+// @version      1.23
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. Don't use with "webcamdarts" color" and "webcamdarts font-size"
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu. Nie używaj z „webcamdarts” color” i „webcamdarts font-size”
 // @author       Edmund Kawalec
@@ -215,10 +215,9 @@ referenceNode1.after(recbutton);
     addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter > div:nth-child(4) {display: none; }');
     addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter{min-height:100%;}');
     addGlobalStyle('#lobby, .lobby {min-height:100%;}');
-    addGlobalStyle('#users {height:fit-content;min-height: 90%; zoom: 100% !important;}');
-    addGlobalStyle('#users {margin-top:28px; padding-top:0px;margin-top:18px;position:fixed;right: 0px;min-width: max-content; box-sizing:border-box; height:200px; background-color: #8cffa0;}');
-    //grille joueurs
-    addGlobalStyle('#users {display: flex;flex-wrap: wrap;place-content: flex-start;right: 0px;box-sizing: border-box;min-width: 50%;max-width: 50%;zoom: 83%;}');
+    addGlobalStyle('#users {height:fit-content; min-height: 90%; zoom: 100% !important;}');
+    addGlobalStyle('#users {padding-top:0px; margin-top:18px; position:fixed; right: 0px; min-width: max-content; box-sizing: border-box; height:200px; background-color: #8cffa0;}');
+    addGlobalStyle('#users {display: flex; flex-wrap: wrap; place-content: flex-start; min-width: 50%; max-width: 50%; }');
     addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter > div.split-view.k-pane.k-scrollable.k-widget.k-splitter{min-height:100%;}');
     addGlobalStyle('.cusermenu{position:absolute; top:0px;}');
     addGlobalStyle('div#current-user {position: fixed;top:2px;width: 275px;right: 2px;height: 55px;padding-right: 4px;;z-index:9999992;}');
