@@ -28,6 +28,11 @@ You can choose notification language: English, Deutsch, Polish on plugin Voice C
 Version history
 ---------------------
 
+**1.26 (2023.06.03)**
+* Updated Current Player tile with icons
+* Fixed some CSS bugs
+
+
 **1.25 (2023.06.02)**
 * Updated RWD with CSS refactor.
 * Include Lineicons fonts for small icons used in player menus
