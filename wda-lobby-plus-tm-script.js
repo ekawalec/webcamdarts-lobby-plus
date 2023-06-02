@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.25
+// @version      1.26
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. Don't use with "webcamdarts" color" and "webcamdarts font-size"
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu. Nie używaj z „webcamdarts” color” i „webcamdarts font-size”
 // @author       Edmund Kawalec
@@ -16,6 +16,7 @@
 // @updateURL  https://greasyfork.org/scripts/466641-webcamdarts-lobby-plus/code/Webcamdarts%20Lobby%20%5Bplus%5D.user.js
 // @license GIT
 // ==/UserScript==
+
 
 
 
@@ -182,7 +183,6 @@ referenceNode1.after(recbutton);
     addGlobalStyle('.rMenu.userli.busy{order:2;}');
     addGlobalStyle('.container{max-width: 750px;}');
     addGlobalStyle('.Camtesting{position: absolute;right:40px;bottom:18px;float:right;}');
-    addGlobalStyle('.logout {position: relative;top: 50px;}');
     addGlobalStyle('#current-user > div.currenuser-info > div.userinfo {position: relative;left:57px;bottom: 12px;height:100%;width:fit-content }');
     addGlobalStyle('#current-user > div.currenuser-info > div.userinfo > p:nth-child(2) {font-size: 14px;}');
     addGlobalStyle('#current-user > div.currenuser-info > div.userimage,#current-user > div.currenuser-info > div.userimage > img {position: absolute;top: 0px;width:54px;height:53px;  }');
@@ -195,7 +195,8 @@ referenceNode1.after(recbutton);
     addGlobalStyle('#current-user.busy{ background-color: #572525; }');
     addGlobalStyle('.motdcont {display:none;}');
     addGlobalStyle('#info-profil {position:absolute;display:block;width:100%;color:white;}');
-    addGlobalStyle('.logout {position: relative;top: 35px;float:right;}');
+    addGlobalStyle('.logout {position: relative;top: 37px;text-align:right;}');
+    addGlobalStyle('#current-user a, .logout a {text-decoration: none}');
     //TEST avec search bar//
     addGlobalStyle('.messages-container {height: 23px;position: sticky;min-width: 100%;width: 100%;top: -4px;background-color: #302E2E;');
     addGlobalStyle(' .info-message {font-weight: bold;background-color:#302E2E;font-size:14px;width: 100%;overflow-x: auto;overflow-y: hidden;white-space: nowrap;display: inline-block; }');
@@ -222,7 +223,7 @@ referenceNode1.after(recbutton);
     addGlobalStyle('#users {display: flex; flex-wrap: wrap; place-content: flex-start; min-width: 50%; max-width: 50%; }');
     addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter > div.split-view.k-pane.k-scrollable.k-widget.k-splitter{min-height:100%;}');
     addGlobalStyle('.cusermenu{position:absolute; top:0px;}');
-    addGlobalStyle('div#current-user {position: fixed;top:2px;width: 275px;right: 2px;height: 55px;padding-right: 4px;;z-index:9999992;}');
+    addGlobalStyle('div#current-user {position: fixed;top:2px;width: 285px;right: 2px;height: 55px;padding-right: 4px;;z-index:9999992;}');
     addGlobalStyle('#current-user > div > div.optionContainer > div {width:0px;display:none;position:fixedvisibility:hidden;}');
     addGlobalStyle('.optionContainer {position: fixed;width: 150px;top: 25px;right: 340px;visibility: visible;;}');
     addGlobalStyle('#current-user > div > div.optionContainer > div > div:nth-child(1) {position: fixed;right: 275px;height: 25px;width: fit-content;top: 24px;width: -moz-fit-content;}');
@@ -290,6 +291,8 @@ referenceNode1.after(recbutton);
     addGlobalStyle('.info-handle {left: calc(50vw + 5px) !important; line-height: 23px;}');
     addGlobalStyle('#users .userli .userinfo .user-camapproved, #users .userli .userinfo .user-camnotapproved {position: absolute; top: 15px; left: 45px; } ');
     addGlobalStyle('.chat-container .chat-messagebar #SendMessage  {width: 100px; display: block; float: left; max-width: 100px; } ');
+    addGlobalStyle('.ml-5 {margin-left: 5px}');
+    addGlobalStyle('.mr-5 {margin-right: 5px}');
 
 
 
@@ -665,3 +668,23 @@ referenceNode1.after(recbutton);
     }
 
 })();
+
+//current user tile mod
+(function() {
+
+    $('#current-user').hide();
+
+    setTimeout(function() {
+        $('#current-user .logout').children('a').eq(0).attr('title', 'Profile').addClass('ml-5').html('<small><i class="lni lni-user"></i> profile</small>');
+        $('#current-user .logout').children('a').eq(1).attr('title', 'Stats').addClass('ml-5').html('<small><i class="lni lni-stats-up"></i> stats</small>');
+        let _msg = $('#current-user .logout').children('a').eq(2).text().replace('Messages ', '<i class="lni lni-popup"></i> messages ');
+        $('#current-user .logout').children('a').eq(2).attr('title', 'Messages').addClass('ml-5').html('<small>'+_msg+'</small>');
+        $('#current-user .logout').children('a').eq(3).attr('title', 'Logout').addClass('ml-5').addClass('mr-5').html('<small><i class="lni lni-cross-circle"></i> logout</small>');
+
+        $('#current-user').show('fast');
+
+    }, 3000);
+
+})();
+
+
