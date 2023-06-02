@@ -2,18 +2,22 @@ Webcamdarts Lobby [plus]
 
 Script based on [Ultimate Webcamdarts Lobby by Antoine Maingeot](https://greasyfork.org/pl/scripts/401652-ultimate-webcamdarts-lobby)
 
-Customizable lists:
-* Frisnds
+Configurable lists (usernames comma separated and view style):
+* Friends
 * Black
 * Personal
 
-Clickable user nick in chat window to show small menu with links:
-- player AVG
-- chat (to talk to user & game challenge)
-- profile (view user profile in new tab)
-It works with Favorities and on private chat window also :)
+Configurable Voice options: enable/disable and EN/DE/PL 
 
-Voice configuration.
-Users list customization is fully refactored: Friends, Blscklist, Personal.
-Updated RWD with CSS refactor.
-Added Lineicons fonts
+Clickable player nicks in chat windows to show small player menu with info:
+- player AVG
+- chat link (to talk to user & game challenge)
+- profile link (view user profile in new tab)
+
+It works with users on lists (Favourities etc) also.
+
+Additional: 
+
+**version 1.25
+* Updated RWD with CSS refactor.
+* Include Lineicons fonts for small icons used in player menus
