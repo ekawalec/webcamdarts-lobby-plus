@@ -23,6 +23,7 @@ It works with users on lists (Favourities etc) also.
 Version history
 ---------------------
 
-***version 1.25***
+**1.25 (2023.06.02)**
 * Updated RWD with CSS refactor.
 * Include Lineicons fonts for small icons used in player menus
+* Fixed some minor bugs
