@@ -34,6 +34,8 @@ Version history
 * Fix incorrect CSS
 * STATS button reviewed
 
+**1.27 - 1.32 (2023.06.03-06)**
+* fix minor bugs
 
 **1.26 (2023.06.03)**
 * Updated Current Player tile with icons
