@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.28
+// @version      1.29
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. Don't use with "webcamdarts" color" and "webcamdarts font-size"
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu. Nie używaj z „webcamdarts” color” i „webcamdarts font-size”
 // @author       Edmund Kawalec
@@ -603,15 +603,15 @@ referenceNode1.after(recbutton);
 
         if (_username != $('.currenuser-info').attr('value')) {
             $(e.target).removeClass('dropdown').addClass('dropdown');
-            var _profileLink = '<a class="userProfile" href="https://www.webcamdarts.com/GameOn/Game/MemberStats/'+_username+'" target="_blank"><i class="lni lni-user"></i> Profile</a>';
+            var _profileLink = '<a class="userProfile" href="https://www.webcamdarts.com/GameOn/Game/MemberStats/'+_username+'" target="_blank"><i class="fa-regular fa-user"></i> Profile</a>';
             var _chatLink = '';
             if (dataItem!=undefined) {
                 _playerAvg = '<span class="playerAvg">'+_playerAvg+'</span>';
-                _chatLink = '<a href="#" class="chatWithUser" data-username="'+_username+'"><i class="lni lni-comments"></i> Chat</a>';
+                _chatLink = '<a href="#" class="chatWithUser" data-username="'+_username+'"><i class="fa-regular fa-comment"></i> Chat</a>';
             } else {
                 _playerAvg = '<span class="playerAvg">offline</span>';
             }
-            var _closeLink = '<span class="hideMe">x</span>' ;
+            var _closeLink = '<span class="hideMe"><i class="fa-regular fa-circle-xmark"></i></span>' ;
             $(e.target).after('<div class="dropdown-content">' + _playerAvg + _chatLink + _profileLink + _closeLink + '</div>');
         }
     });
