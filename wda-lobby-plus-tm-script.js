@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.30
+// @version      1.31
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. Don't use with "webcamdarts" color" and "webcamdarts font-size"
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu. Nie używaj z „webcamdarts” color” i „webcamdarts font-size”
 // @author       Edmund Kawalec
@@ -16,7 +16,6 @@
 // @updateURL  https://greasyfork.org/scripts/466641-webcamdarts-lobby-plus/code/Webcamdarts%20Lobby%20%5Bplus%5D.user.js
 // @license GIT
 // ==/UserScript==
-
 
 
 const UNREAD_MESSAGES_TIMEOUT = 1000;
@@ -181,7 +180,7 @@ referenceNode1.after(recbutton);
     addGlobalStyle('.rMenu.userli.avaiable{order:1;}');
     addGlobalStyle('.rMenu.userli.busy{order:2;}');
     addGlobalStyle('.container{max-width: 750px;}');
-    addGlobalStyle('.Camtesting{position: absolute;right:40px;bottom:18px;float:right;}');
+    addGlobalStyle('.Camtesting{position: absolute;right:40px;bottom:22px;float:right;}');
     addGlobalStyle('#current-user > div.currenuser-info > div.userinfo {position: relative;left:57px;bottom: 12px;height:100%;width:fit-content }');
     addGlobalStyle('#current-user > div.currenuser-info > div.userinfo > p:nth-child(2) {font-size: 14px;}');
     addGlobalStyle('#current-user > div.currenuser-info > div.userimage,#current-user > div.currenuser-info > div.userimage > img {position: absolute;top: 0px;width:54px;height:53px;  }');
@@ -294,8 +293,7 @@ referenceNode1.after(recbutton);
     addGlobalStyle('.mr-5 {margin-right: 5px}');
     addGlobalStyle('#current-user.available, .userli.available {border: solid 1px #079119; } ');
     addGlobalStyle('#current-user.busy, .userli.busy {border: solid 1px #f22121; } ');
-
-
+    addGlobalStyle('.userinfo {min-width: 150px;} ');
 
 })();
 
@@ -681,6 +679,7 @@ referenceNode1.after(recbutton);
         let _msg = $('#current-user .logout').children('a').eq(2).text().replace('Messages ', '<i class="fa-regular fa-message"></i> dms ');
         $('#current-user .logout').children('a').eq(2).attr('title', 'Messages').addClass('ml-5').addClass('mr-5').html('<small>'+_msg+'</small>');
         $('#current-user .logout').children('a').eq(3).attr('title', 'Logout').addClass('ml-5').addClass('mr-5').html('<small><i class="fa-regular fa-circle-xmark"></i> logout</small>');
+        $('#current-user a.Camtesting').attr('title', 'Camera Test').html('<i class="fa-solid fa-camera"></i>');
 
         addGlobalStyle('.useroptions .useropt  {width: 120px !important; } ');
         addGlobalStyle('.useroptions .useropt .available  {padding: 0px; margin-left: 10px; margin-top: 2px; margin-right: 0px; background-image: none } ');
@@ -691,7 +690,7 @@ referenceNode1.after(recbutton);
         $('.useroptions .useropt .available').html('<i class="fa-sharp fa-solid fa-circle-check" style="color: #079119;"></i>');
         $('.useroptions .useropt .busy').html('<i class="fa-sharp fa-solid fa-circle-xmark" style="color: #f22121;"></i>');
 
-        addGlobalStyle('.mc-l .available, .mc-l .busy {background-image: none; padding: 0px; margin-top: 0px; margin-left: 0px; margin-right: 5px;} ');
+        addGlobalStyle('.mc-l .available, .mc-l .busy {background-image: none; padding: 0px; margin-top: 0px; margin-left: 10px; margin-right: 5px;} ');
         addGlobalStyle('.mc-l .available::before, .mc-l .busy::before {inline-block;  vertical-align: middle; font-weight: 900; font-family: "Font Awesome 6 Free";} ');
         addGlobalStyle('.mc-l .available::before {color: #079119; content: "\\f058"; } ');
         addGlobalStyle('.mc-l .busy::before {color: #f22121; content: "\\f057"; } ');
@@ -701,5 +700,4 @@ referenceNode1.after(recbutton);
     }, 3000);
 
 })();
-
 
