@@ -28,9 +28,11 @@ You can choose notification language: English, Deutsch, Polish on plugin Voice C
 Version history
 ---------------------
 
-**1.31 (2023.06.06)**
+**1.32 (2023.06.06)**
 * Replace LineIcons with FontAwesome 6.4
 * Use new icons in Player Status menu
+* Fix incorrect CSS
+* STATS button reviewed
 
 
 **1.26 (2023.06.03)**
