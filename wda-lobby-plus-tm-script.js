@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.26
+// @version      1.27
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. Don't use with "webcamdarts" color" and "webcamdarts font-size"
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu. Nie używaj z „webcamdarts” color” i „webcamdarts font-size”
 // @author       Edmund Kawalec
@@ -675,11 +675,17 @@ referenceNode1.after(recbutton);
     $('#current-user').hide();
 
     setTimeout(function() {
-        $('#current-user .logout').children('a').eq(0).attr('title', 'Profile').addClass('ml-5').html('<small><i class="lni lni-user"></i> profile</small>');
-        $('#current-user .logout').children('a').eq(1).attr('title', 'Stats').addClass('ml-5').html('<small><i class="lni lni-stats-up"></i> stats</small>');
-        let _msg = $('#current-user .logout').children('a').eq(2).text().replace('Messages ', '<i class="lni lni-popup"></i> messages ');
+        $('#current-user .logout').children('a').eq(0).attr('title', 'Profile').addClass('ml-5').html('<small><i class="fa-regular fa-user"></i> profile</small>');
+        $('#current-user .logout').children('a').eq(1).attr('title', 'Stats').addClass('ml-5').html('<small><i class="fa-solid fa-chart-line"></i> stats</small>');
+        let _msg = $('#current-user .logout').children('a').eq(2).text().replace('Messages ', '<i class="fa-regular fa-message"></i> dms ');
         $('#current-user .logout').children('a').eq(2).attr('title', 'Messages').addClass('ml-5').html('<small>'+_msg+'</small>');
-        $('#current-user .logout').children('a').eq(3).attr('title', 'Logout').addClass('ml-5').addClass('mr-5').html('<small><i class="lni lni-cross-circle"></i> logout</small>');
+        $('#current-user .logout').children('a').eq(3).attr('title', 'Logout').addClass('ml-5').addClass('mr-5').html('<small><i class="fa-regular fa-circle-xmark"></i> logout</small>');
+
+        addGlobalStyle('.useroptions .useropt  {width: 120px !important; } ');
+        addGlobalStyle('.useroptions .useropt .available  {padding: 0px; margin-left: 10px; margin-top: 2px; margin-right: 0px; background-image: none } ');
+        addGlobalStyle('.useroptions .useropt .busy  {padding: 0px; margin-left: 10px; margin-top: 2px; margin-right: 0px; background-image: none } ');
+        $('.useroptions .useropt .available').html('<i class="fa-sharp fa-solid fa-circle-check" style="color: #52c804;"></i>');
+        $('.useroptions .useropt .busy').html('<i class="fa-sharp fa-solid fa-circle-xmark" style="color: #f22121;"></i>');
 
         $('#current-user').show('fast');
 
