@@ -28,6 +28,10 @@ You can choose notification language: English, Deutsch, Polish on plugin Voice C
 Version history
 ---------------------
 
+**1.34 (2023.06.07)**
+* Search player filter
+
+
 **1.33 (2023.06.06)**
 * Replace LineIcons with FontAwesome 6.4
 * Use new icons in Player Status menu
