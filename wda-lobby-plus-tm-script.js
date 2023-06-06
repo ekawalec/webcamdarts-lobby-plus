@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.29
+// @version      1.30
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. Don't use with "webcamdarts" color" and "webcamdarts font-size"
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu. Nie używaj z „webcamdarts” color” i „webcamdarts font-size”
 // @author       Edmund Kawalec
@@ -16,7 +16,6 @@
 // @updateURL  https://greasyfork.org/scripts/466641-webcamdarts-lobby-plus/code/Webcamdarts%20Lobby%20%5Bplus%5D.user.js
 // @license GIT
 // ==/UserScript==
-
 
 
 
@@ -293,6 +292,8 @@ referenceNode1.after(recbutton);
     addGlobalStyle('.chat-container .chat-messagebar #SendMessage  {width: 100px; display: block; float: left; max-width: 100px; } ');
     addGlobalStyle('.ml-5 {margin-left: 5px}');
     addGlobalStyle('.mr-5 {margin-right: 5px}');
+    addGlobalStyle('#current-user.available, .userli.available {border: solid 1px #079119; } ');
+    addGlobalStyle('#current-user.busy, .userli.busy {border: solid 1px #f22121; } ');
 
 
 
@@ -675,17 +676,25 @@ referenceNode1.after(recbutton);
     $('#current-user').hide();
 
     setTimeout(function() {
-        $('#current-user .logout').children('a').eq(0).attr('title', 'Profile').addClass('ml-5').html('<small><i class="fa-regular fa-user"></i> profile</small>');
-        $('#current-user .logout').children('a').eq(1).attr('title', 'Stats').addClass('ml-5').html('<small><i class="fa-solid fa-chart-line"></i> stats</small>');
+        $('#current-user .logout').children('a').eq(0).attr('title', 'Profile').addClass('mr-5').html('<small><i class="fa-regular fa-user"></i> profile</small>');
+        $('#current-user .logout').children('a').eq(1).attr('title', 'Stats').addClass('ml-5').addClass('mr-5').html('<small><i class="fa-solid fa-chart-line"></i> stats</small>');
         let _msg = $('#current-user .logout').children('a').eq(2).text().replace('Messages ', '<i class="fa-regular fa-message"></i> dms ');
-        $('#current-user .logout').children('a').eq(2).attr('title', 'Messages').addClass('ml-5').html('<small>'+_msg+'</small>');
+        $('#current-user .logout').children('a').eq(2).attr('title', 'Messages').addClass('ml-5').addClass('mr-5').html('<small>'+_msg+'</small>');
         $('#current-user .logout').children('a').eq(3).attr('title', 'Logout').addClass('ml-5').addClass('mr-5').html('<small><i class="fa-regular fa-circle-xmark"></i> logout</small>');
 
         addGlobalStyle('.useroptions .useropt  {width: 120px !important; } ');
         addGlobalStyle('.useroptions .useropt .available  {padding: 0px; margin-left: 10px; margin-top: 2px; margin-right: 0px; background-image: none } ');
         addGlobalStyle('.useroptions .useropt .busy  {padding: 0px; margin-left: 10px; margin-top: 2px; margin-right: 0px; background-image: none } ');
-        $('.useroptions .useropt .available').html('<i class="fa-sharp fa-solid fa-circle-check" style="color: #52c804;"></i>');
+        addGlobalStyle('.useroptions .useropt .label { padding: 1px 6px; } ');
+        addGlobalStyle('.useroptions .useropt .label strong  {font-size: 0.8em; } ');
+
+        $('.useroptions .useropt .available').html('<i class="fa-sharp fa-solid fa-circle-check" style="color: #079119;"></i>');
         $('.useroptions .useropt .busy').html('<i class="fa-sharp fa-solid fa-circle-xmark" style="color: #f22121;"></i>');
+
+        addGlobalStyle('.mc-l .available, .mc-l .busy {background-image: none; padding: 0px; margin-top: 0px; margin-left: 0px; margin-right: 5px;} ');
+        addGlobalStyle('.mc-l .available::before, .mc-l .busy::before {inline-block;  vertical-align: middle; font-weight: 900; font-family: "Font Awesome 6 Free";} ');
+        addGlobalStyle('.mc-l .available::before {color: #079119; content: "\\f058"; } ');
+        addGlobalStyle('.mc-l .busy::before {color: #f22121; content: "\\f057"; } ');
 
         $('#current-user').show('fast');
 
