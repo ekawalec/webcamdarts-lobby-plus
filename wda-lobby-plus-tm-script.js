@@ -178,7 +178,7 @@ referenceNode1.after(recbutton);
 (function() {
     'use strict';
 
-    addGlobalStyle('@import "https://cdn.lineicons.com/4.0/lineicons.css"');
+    addGlobalStyle('@import "https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"');
     addGlobalStyle('.rMenu.userli.avaiable{order:1;}');
     addGlobalStyle('.rMenu.userli.busy{order:2;}');
     addGlobalStyle('.container{max-width: 750px;}');
