@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.33
+// @version      1.34
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. Don't use with "webcamdarts" color" and "webcamdarts font-size"
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu. Nie używaj z „webcamdarts” color” i „webcamdarts font-size”
 // @author       Edmund Kawalec
@@ -218,7 +218,7 @@ referenceNode1.after(recbutton);
     addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter{min-height:100%;}');
     addGlobalStyle('#lobby, .lobby {min-height:100%;}');
     addGlobalStyle('#users {height:fit-content; min-height: 90%; zoom: 100% !important;}');
-    addGlobalStyle('#users {padding-top:0px; margin-top:18px; position:fixed; right: 0px; min-width: max-content; box-sizing: border-box; height:200px; background-color: #8cffa0;}');
+    addGlobalStyle('#users {padding-top:0px; margin-top:25px; position:fixed; right: 0px; min-width: max-content; box-sizing: border-box; height:200px; background-color: #8cffa0;}');
     addGlobalStyle('#users {display: flex; flex-wrap: wrap; place-content: flex-start; min-width: 50%; max-width: 50%; }');
     addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter > div.split-view.k-pane.k-scrollable.k-widget.k-splitter{min-height:100%;}');
     addGlobalStyle('.cusermenu{position:absolute; top:0px;}');
@@ -696,7 +696,7 @@ referenceNode1.after(recbutton);
         addGlobalStyle('.mc-l .available::before {color: #079119; content: "\\f058"; } ');
         addGlobalStyle('.mc-l .busy::before {color: #f22121; content: "\\f057"; } ');
         $('#current-user').show('fast');
-     
+
         addGlobalStyle('.info-handle {width: auto; } ');
         $('.info-handle').html('<i class="fa-solid fa-chart-line"></i> STATS');
 
@@ -704,3 +704,34 @@ referenceNode1.after(recbutton);
 
 })();
 
+
+// fast player search
+(function() {
+    addGlobalStyle('#users-name-filter {display: inline-block; width: 200px; margin: 4px 30px 2px 0px; padding: 2px 5px; } ');
+    addGlobalStyle('label#label-users-available-filter {display: inline-block; } ');
+
+    $.expr[':'].icontains = $.expr.createPseudo(function(text) {
+        return function(e) {
+            return $(e).text().toUpperCase().indexOf(text.toUpperCase()) >= 0;
+        };
+    });
+
+    $('#users-available-filter').parent('div').html('<label id="label-users-available-filter" for="users-available-filter"><input id="users-available-filter" type="checkbox" name="available" /> Available only</label>');
+    $('#users-available-filter').parent('label').before('<input id="users-name-filter" type="text" placeholder="... search player">');
+    $('#users-name-filter').on('change, keyup', function() {
+        var _self = $(this);
+        var search = _self.val();
+        if (search.length > 1 ) {
+            $('#users .rMenu.userli').hide();
+            $('#label-users-available-filter').hide();
+            $('#users-available-filter').hide();
+            $("#users .userinfo p:first-child:icontains('"+search+"')").parents('.rMenu.userli').show();
+        } else {
+            $('#users .rMenu.userli').show();
+            $('#label-users-available-filter').show();
+            $('#users-available-filter').show();
+        }
+    });
+
+
+})();
