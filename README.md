@@ -30,6 +30,10 @@ You can choose notification language: English, Deutsch, Polish on plugin Voice C
 Version history
 ---------------------
 
+**1.40 (2023.06.08)**
+* Automatic player name recognition on "join lobby" and "available for games" events
+
+
 **1.39 (2023.06.08)**
 * Refactored of higlighting script section
 * Fixed chat window height 
