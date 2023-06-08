@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.39
+// @version      1.40
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. 
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu.
 // @author       Edmund Kawalec
@@ -226,7 +226,7 @@ debugMode();
     addGlobalStyle('.userimage {float: left;height: 50px;width: 50px;}');
     //EFFACER MESSAGE
     addGlobalStyle('div.chat-window-container.k-pane.k-scrollable { padding: 0px;min-width: 50%;max-width: 50%;overflow:visible;max-height:unset;min-height:unset;}');
-    addGlobalStyle('#chatWindow {height: calc(100vh - 170px); padding: 20px 30px !important; margin: 0px !important; }');
+    addGlobalStyle('#chatWindow {height: calc(100vh - 170px); padding: 20px 30px !important; margin: 0px !important; overflow-y: auto;}');
 
     addGlobalStyle('#nav > div{display:block;max-width:50%;}');
     addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter > div.split-view.k-pane.k-scrollable.k-widget.k-splitter > div.lobby-game-info.k-pane {z-index:15;}');
@@ -289,6 +289,9 @@ debugMode();
     addGlobalStyle('#current-user.available, .userli.available {border: solid 1px #079119; } ');
     addGlobalStyle('#current-user.busy, .userli.busy {border: solid 1px #f22121; } ');
     addGlobalStyle('.userinfo {min-width: 150px;} ');
+
+    addGlobalStyle('#chatWindow .mc-m strong.player {cursor: pointer } ');
+
 
 })();
 
@@ -492,7 +495,7 @@ debugMode();
 (function() {
 
 
-    $(document).on('click', '#chatWindow .mc-u strong, #chatWindow .THmo, .personal-message .chat-history .mc-u strong', function(e) {
+    $(document).on('click', '#chatWindow .mc-u strong, #chatWindow .mc-m strong,  #chatWindow .THmo, .personal-message .chat-history .mc-u strong', function(e) {
         // szukac w #users .rMenu.userli po value = e.target i pobierac data-uid
         var _username = $(e.target).text();
         $('.dropdown-content').detach();
@@ -635,6 +638,51 @@ debugMode();
 
 })();
 
+
+// update chat playernames for clicks
+(function() {
+
+
+    var ChatObserver = (window.MutationObserver) ? window.MutationObserver : window.WebKitMutationObserver;
+    if (ChatObserver){
+        var ChatObserverMonitor = new ChatObserver(function(mutationSet){
+            mutationSet.forEach(function(mutation){
+                for (var i=0; i<mutation.addedNodes.length; i++){
+                    if (mutation.addedNodes[i].nodeType == 1){
+                        updatePlayerOnChat(mutation.addedNodes[i]);
+                    }
+                }
+            });
+        });
+        // attach chgMon to document.body
+        var chatObserverOptions = {childList: true, subtree: true};
+        ChatObserverMonitor.observe(document.getElementById("chatWindow"), chatObserverOptions);
+    }
+
+    function updatePlayerOnChat(el) {
+        var patterns = [
+            ' joined the Lobby',
+            ' is available for games'
+        ];
+        var node = $(el).find('.mc-m');
+        patterns.some(function(v) {
+            let text = node.text();
+            let test = text.indexOf(v) >= 0;
+            if (test === true) {
+                let _username = text.replace(v, '');
+                let _color = '';
+                let _class = 'player';
+                let _player = $('#users').find(".rMenu.userli[value='"+_username+"']").find('.userinfo');
+                _color = _player.css('color');
+                node.html('<strong style="color: '+_color+'" class="player" title="">' + _username + '</strong> ' + v);
+                consoleLog(v + ' found in: ' + node.text() + ', recognized nick:' + _username);
+            }
+            return test;
+        })
+    };
+
+
+})();
 
 // footer
 (function() {
