@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.38
+// @version      1.39
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. 
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu.
 // @author       Edmund Kawalec
@@ -16,7 +16,6 @@
 // @updateURL  https://greasyfork.org/scripts/466641-webcamdarts-lobby-plus/code/Webcamdarts%20Lobby%20%5Bplus%5D.user.js
 // @license GIT
 // ==/UserScript==
-
 
 const UNREAD_MESSAGES_TIMEOUT = 1000;
 const TABS_CHECK_INTERVAL = 7000;
@@ -191,7 +190,6 @@ debugMode();
     addGlobalStyle('.logout {position: relative;top: 37px;text-align:right;}');
     addGlobalStyle('#current-user a, .logout a {text-decoration: none}');
     //TEST avec search bar//
-    addGlobalStyle('.messages-container {height: 23px;position: sticky;min-width: 100%;width: 100%;top: -4px;background-color: #302E2E;');
     addGlobalStyle(' .info-message {font-weight: bold;background-color:#302E2E;font-size:14px;width: 100%;overflow-x: auto;overflow-y: hidden;white-space: nowrap;display: inline-block; }');
     addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter > div.split-view.k-pane.k-scrollable.k-widget.k-splitter > div.chat-users.k-pane.k-scrollable > div:nth-child(1){font-size:13px;height:31px;position: fixed;top:61px;left: calc(70vw);background-color:#302E2E;}');
     addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter{min-height: 100%;position: fixed;}');
@@ -199,7 +197,7 @@ debugMode();
     addGlobalStyle('.bighonkinglogoutbutton{display:none; }');
     addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter > div.split-view.k-pane.k-scrollable.k-widget.k-splitter > div.chat-users.k-pane.k-scrollable > div.bighonkinglogoutbutton > a {display:none;}');
     //TEST//
-    addGlobalStyle('.messages-container {height: 23px;position: sticky;min-width: 100%;width: 100%;top: -4px;background-color: #302E2E;');
+    addGlobalStyle('.messages-container {height: 45px; position: sticky; min-width: 100%; width: 100%; top: -4px; background-color: #302E2E;');
     addGlobalStyle('#nav,.band.navigation{max-width: 750px;position:absolute;z-index:10; }');
     addGlobalStyle('#nav{display:inline;border-bottom: 0px;}');
     addGlobalStyle('#current-user {height: auto;border: none;padding-top: 0px;padding-left: 0px;border-radius: 0px;padding-top: 0px;margin-right: 0px;}');
@@ -228,7 +226,7 @@ debugMode();
     addGlobalStyle('.userimage {float: left;height: 50px;width: 50px;}');
     //EFFACER MESSAGE
     addGlobalStyle('div.chat-window-container.k-pane.k-scrollable { padding: 0px;min-width: 50%;max-width: 50%;overflow:visible;max-height:unset;min-height:unset;}');
-    addGlobalStyle('#chatWindow {height: calc(100vh - 150px); padding: 20px 30px !important; margin: 20px 0px 0px 0px !important; }');
+    addGlobalStyle('#chatWindow {height: calc(100vh - 170px); padding: 20px 30px !important; margin: 0px !important; }');
 
     addGlobalStyle('#nav > div{display:block;max-width:50%;}');
     addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter > div.split-view.k-pane.k-scrollable.k-widget.k-splitter > div.lobby-game-info.k-pane {z-index:15;}');
