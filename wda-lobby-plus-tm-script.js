@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.36
+// @version      1.37
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. Don't use with "webcamdarts" color" and "webcamdarts font-size"
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu. Nie używaj z „webcamdarts” color” i „webcamdarts font-size”
 // @author       Edmund Kawalec
@@ -16,6 +16,7 @@
 // @updateURL  https://greasyfork.org/scripts/466641-webcamdarts-lobby-plus/code/Webcamdarts%20Lobby%20%5Bplus%5D.user.js
 // @license GIT
 // ==/UserScript==
+
 
 
 const UNREAD_MESSAGES_TIMEOUT = 1000;
@@ -156,19 +157,13 @@ function consoleLog(data) {
 debugMode();
 
 
+// INIT
+(function() {
+    'use strict';
+    $('#current-user').append('<a class="Camtesting" href="https://game.webcamdarts.com/CamTest" target="_blank">Camtest</a>');
+    $( "<a class='deco' href='javascript:doLogout()'>Logout</a>" ).appendTo( ".logout" );
+})();
 
-$('#current-user').append('<a class="Camtesting" href="https://game.webcamdarts.com/CamTest" target="_blank">Camtest</a>');
-$( "<a class='deco' href='javascript:doLogout()'>Logout</a>" ).appendTo( ".logout" );
-$('.messages-container').append('<div class="info-message"><a href="https://www.webcamdarts.com/forum/wda-archives/2018/1/some-help-for-new-members" target="_blank">New Member Help</a><a href="https://game.webcamdarts.com/CamTest" target="_blank">Cam Test</a><a href="https://www.webcamdarts.com/utils/smilies.html" target="_blank">Smilies</a><a href="https://www.facebook.com/groups/440581142678738/" target="_blank">Facebook Group</a><a href="https://game.webcamdarts.com/game" target="_blank">Rejoin Last Game</a></div>');
-
-var recbutton = document.createElement("div");
-recbutton.innerHTML = '<div id="recbutton" style="width:100%;height:25px; position:fixed; bottom:0px;font-size:smaller;margin-left:2px;white-space: nowrap;display: block; padding-top: 8px; padding-left: 18px; " ><a href="https://chrome.google.com/webstore/detail/recordrtc/ndcljioonkecdnaaihodjgiliohngojp" target="_blank">Record your match (save & upload youtube) with RecordRTC</a> or <a href="https://chrome.google.com/webstore/detail/webrtc-desktop-sharing/nkemblooioekjnpfekmjhpgkackcajhg" target="_blank">Stream your match (max 10 friends) with WebRTC Sharing</a> Extension for Google Chrome</div>';
-
-// Get the reference node
-var referenceNode1 = document.querySelector('#SendMessage');
-
-// Insert the new node before the reference node
-referenceNode1.after(recbutton);
 
 
 
@@ -192,7 +187,7 @@ referenceNode1.after(recbutton);
     addGlobalStyle(' #current-user.available, .userli.available {cursor: pointer; background-color: #4b560d60; }');
     addGlobalStyle('.cusermenu {top: 77px;position: absolute;opacity:0.7;}');
     addGlobalStyle('#current-user.busy{ background-color: #572525; }');
-    addGlobalStyle('.motdcont {display:none;}');
+    addGlobalStyle('.motdcont {display: none; width: 50% !important;}');
     addGlobalStyle('#info-profil {position:absolute;display:block;width:100%;color:white;}');
     addGlobalStyle('.logout {position: relative;top: 37px;text-align:right;}');
     addGlobalStyle('#current-user a, .logout a {text-decoration: none}');
@@ -234,7 +229,7 @@ referenceNode1.after(recbutton);
     addGlobalStyle('.userimage {float: left;height: 50px;width: 50px;}');
     //EFFACER MESSAGE
     addGlobalStyle('div.chat-window-container.k-pane.k-scrollable { padding: 0px;min-width: 50%;max-width: 50%;overflow:visible;max-height:unset;min-height:unset;}');
-    addGlobalStyle('#chatWindow {height: calc(100vh - 150px); padding: 20px 30px !important; margin: 0px !important; }');
+    addGlobalStyle('#chatWindow {height: calc(100vh - 150px); padding: 20px 30px !important; margin: 20px 0px 0px 0px !important; }');
 
     addGlobalStyle('#nav > div{display:block;max-width:50%;}');
     addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter > div.split-view.k-pane.k-scrollable.k-widget.k-splitter > div.lobby-game-info.k-pane {z-index:15;}');
@@ -289,7 +284,7 @@ referenceNode1.after(recbutton);
     addGlobalStyle(' @media screen and (min-width: 1025px) and (max-width: 1199px) {  .userli {    min-width: 47%; } }');
     addGlobalStyle(' @media screen and (min-width: 1200px) and (max-width: 1350px) {  .userli {    min-width: 30%; } }');
     addGlobalStyle(' @media screen and (min-width: 1351px) {  .userli {    min-width: 23%; } }');
-    addGlobalStyle('.info-handle {left: calc(50vw + 5px) !important; line-height: 23px;}');
+    addGlobalStyle('.info-handle {left: calc(50vw + 5px) !important; line-height: 30px;}');
     addGlobalStyle('#users .userli .userinfo .user-camapproved, #users .userli .userinfo .user-camnotapproved {position: absolute; top: 15px; left: 45px; } ');
     addGlobalStyle('.chat-container .chat-messagebar #SendMessage  {width: 100px; display: block; float: left; max-width: 100px; } ');
     addGlobalStyle('.ml-5 {margin-left: 5px}');
@@ -641,5 +636,21 @@ referenceNode1.after(recbutton);
         }
     });
 
+})();
+
+
+// footer
+(function() {
+    setTimeout(function() {
+
+        var recbutton = document.createElement("div");
+        recbutton.innerHTML = '<div id="recbutton" style="width:100%;height:25px; position:fixed; bottom:0px;font-size:smaller;margin-left:2px;white-space: nowrap;display: block; padding-top: 8px; padding-left: 18px; " ><a href="https://chrome.google.com/webstore/detail/recordrtc/ndcljioonkecdnaaihodjgiliohngojp" target="_blank">Record your match (save & upload youtube) with RecordRTC</a> or <a href="https://chrome.google.com/webstore/detail/webrtc-desktop-sharing/nkemblooioekjnpfekmjhpgkackcajhg" target="_blank">Stream your match (max 10 friends) with WebRTC Sharing</a> Extension for Google Chrome</div>';
+        var referenceNode1 = document.querySelector('#SendMessage');
+        referenceNode1.after(recbutton);
+
+        $('.motdcont').show('fast');
+
+    }, 3000);
 
 })();
+
