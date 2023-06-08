@@ -30,9 +30,10 @@ You can choose notification language: English, Deutsch, Polish on plugin Voice C
 Version history
 ---------------------
 
-**1.36 (2023.06.08)**
+**1.37 (2023.06.08)**
 * Refactored of higlighting script section
 * Fixed chat window height 
+* Fixed original motd
 
 **1.34 (2023.06.07)**
 * Search player filter
