@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.35
+// @version      1.36
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. Don't use with "webcamdarts" color" and "webcamdarts font-size"
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu. Nie używaj z „webcamdarts” color” i „webcamdarts font-size”
 // @author       Edmund Kawalec
@@ -233,7 +233,9 @@ referenceNode1.after(recbutton);
     addGlobalStyle('#current-user .user-camnotapproved,#current-user .user-camapproved {width: 16px;height: 16px;background-size: 16px 16px;margin-left: 0px;left: 0px;}');
     addGlobalStyle('.userimage {float: left;height: 50px;width: 50px;}');
     //EFFACER MESSAGE
-    addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter > div.split-view.k-pane.k-scrollable.k-widget.k-splitter > div.chat-window-container.k-pane.k-scrollable { padding: 0px;min-width: 50%;max-width: 50%;overflow:visible;max-height:80%;min-height:80%;}');
+    addGlobalStyle('div.chat-window-container.k-pane.k-scrollable { padding: 0px;min-width: 50%;max-width: 50%;overflow:visible;max-height:unset;min-height:unset;}');
+    addGlobalStyle('#chatWindow {height: calc(100vh - 150px); padding: 20px 30px !important; margin: 0px !important; }');
+
     addGlobalStyle('#nav > div{display:block;max-width:50%;}');
     addGlobalStyle('#lobby > div > div:nth-child(16) > div.chat-container.k-widget.k-splitter > div.split-view.k-pane.k-scrollable.k-widget.k-splitter > div.lobby-game-info.k-pane {z-index:15;}');
     addGlobalStyle('.maincont{margin-top:23px;width:100%;margin-left:0px;}');
@@ -322,7 +324,7 @@ referenceNode1.after(recbutton);
         onSave: function (values) {
             say(vCommands.settingsSaved[getLang()]);
             if(!document.body.querySelector(".THmo")) {
-                THmo_doHighlight(document.body);
+                THmo_doHighlight(document.body, friendsCfg, 'keywordsFriends', 'highlightStyleFriends');
             }
             else {
                 location.reload();
@@ -339,7 +341,7 @@ referenceNode1.after(recbutton);
             mutationSet.forEach(function(mutation){
                 for (var i=0; i<mutation.addedNodes.length; i++){
                     if (mutation.addedNodes[i].nodeType == 1){
-                        THmo_doHighlight(mutation.addedNodes[i]);
+                        THmo_doHighlight(mutation.addedNodes[i], friendsCfg, 'keywordsFriends', 'highlightStyleFriends');
                     }
                 }
             });
@@ -349,9 +351,9 @@ referenceNode1.after(recbutton);
         THmo_chgMon.observe(document.body, opts);
     }
     // Main workhorse routine
-    function THmo_doHighlight(el){
+    function THmo_doHighlight(el, config, keywords, highlight){
 
-        var keywordsfriends = friendsCfg.get('keywordsFriends');
+        var keywordsfriends = config.get(keywords);
         if(!keywordsfriends)  { return; }  // end execution if not found
         let sep = ',';
         var pat1 = new RegExp('\\s*' + sep + '+\\s*', 'g'); // trim space/s around separator & trim repeated separator
@@ -360,7 +362,7 @@ referenceNode1.after(recbutton);
         keywordsfriends = keywordsfriends.replace(/\s{2,}/g, ' ').trim();
 
 
-        var highlightStyleFriends = friendsCfg.get('highlightStyleFriends');
+        var highlightStyleFriends = config.get(highlight);
 
         var rQuantifiers = /[-\/\\^$*+?.()|[\]{}]/g;
         keywordsfriends = "\\b" + keywordsfriends.replace(/\,/g, "\\b|\\b", '\\$&').split(',').join('|') + "\\b";
@@ -396,7 +398,7 @@ referenceNode1.after(recbutton);
     /* --------- FOR BLACK LIST ---------*/
 
     // first run
-    THmo_doHighlight(document.body);
+    THmo_doHighlight(document.body, friendsCfg, 'keywordsFriends', 'highlightStyleFriends');
 
 
     var blackListCfg = new MonkeyConfig({
@@ -417,7 +419,7 @@ referenceNode1.after(recbutton);
         onSave: function (values) {
             say(vCommands.settingsSaved[getLang()]);
             if(!document.body.querySelector(".THmo")) {
-                THmo_doHighlight2(document.body);
+                THmo_doHighlight(document.body, blackListCfg, 'keywordsBlack', 'highlightStyleBlack');
             }
             else {
                 location.reload();
@@ -433,7 +435,7 @@ referenceNode1.after(recbutton);
             mutationSet.forEach(function(mutation){
                 for (var i=0; i<mutation.addedNodes.length; i++){
                     if (mutation.addedNodes[i].nodeType == 1){
-                        THmo_doHighlight2(mutation.addedNodes[i]);
+                        THmo_doHighlight(mutation.addedNodes[i], blackListCfg, 'keywordsBlack', 'highlightStyleBlack');
                     }
                 }
             });
@@ -442,62 +444,11 @@ referenceNode1.after(recbutton);
         var opts2 = {childList: true, subtree: true};
         THmo_chgMon2.observe(document.body, opts2);
     }
-    // Main workhorse routine
-    function THmo_doHighlight2(el){
-        var keywordsblack = blackListCfg.get('keywordsBlack');
-        if(!keywordsblack)  { return; }  // end execution if not found
-
-        let sep = ',';
-        var pat1 = new RegExp('\\s*' + sep + '+\\s*', 'g'); // trim space/s around separator & trim repeated separator
-        var pat2 = new RegExp('(?:^' + sep + '+|' + sep + '+$)', 'g'); // trim starting & trailing separator
-        keywordsblack = keywordsblack.replace(pat1, sep).replace(pat2, '');
-        keywordsblack = keywordsblack.replace(/\s{2,}/g, ' ').trim();
-
-        var highlightStyleBlack = blackListCfg.get('highlightStyleBlack');
-
-
-        var rQuantifiers = /[-\/\\^$*+?.()|[\]{}]/g;
-        keywordsblack = "\\b" + keywordsblack.replace(/\,/g, "\\b|\\b", '\\$&').split(',').join('|') + "\\b";
-        var pat = new RegExp('(' + keywordsblack + ')', 'gi');
-        var span = document.createElement('span');
-        // getting all text nodes with a few exceptions
-        var snapElements = document.evaluate(
-            './/text()[normalize-space() != "" ' +
-            'and not(ancestor::style) ' +
-            'and not(ancestor::script) ' +
-            'and not(ancestor::textarea) ' +
-            'and not(ancestor::code) ' +
-            'and not(ancestor::pre)]',
-            el, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
-
-        if (!snapElements.snapshotItem(0)) { return; }  // end execution if not found
-
-        for (var i = 0, len = snapElements.snapshotLength; i < len; i++) {
-            var node = snapElements.snapshotItem(i);
-            // check if it contains the keywords
-            if (pat.test(node.nodeValue)) {
-                // check that it isn't already highlighted
-                if (node.className != "THmo" && node.parentNode.className != "THmo"){
-                    // create an element, replace the text node with an element
-                    var sp = span.cloneNode(true);
-                    sp.innerHTML = node.nodeValue.replace(pat, '<span style="' + highlightStyleBlack + '" class="THmo">$1</span>');
-                    node.parentNode.replaceChild(sp, node);
-                }
-            }
-        }
-    }
 
 
     // first run
-    THmo_doHighlight2(document.body);
-})(); // end of anonymous function
+    THmo_doHighlight(document.body, blackListCfg, 'keywordsBlack', 'highlightStyleBlack');
 
-/* --------- FOR THIRD STYLE ---------*/
-
-(function() { // anonymous function wrapper, used for error checking & limiting scope
-    'use strict';
-
-    if (window.self !== window.top) { return; } // end execution if in a frame
 
     var personalCfg = new MonkeyConfig({
         title: 'Personal configuration',
@@ -517,7 +468,7 @@ referenceNode1.after(recbutton);
         onSave: function (values) {
             say(vCommands.settingsSaved[getLang()]);
             if(!document.body.querySelector(".THmo")) {
-                THmo_doHighlight3(document.body);
+                THmo_doHighlight(document.body, personalCfg, 'keywordsPersonal', 'highlightStylePersonal');
             }
             else {
                 location.reload();
@@ -532,7 +483,7 @@ referenceNode1.after(recbutton);
             mutationSet.forEach(function(mutation){
                 for (var i=0; i<mutation.addedNodes.length; i++){
                     if (mutation.addedNodes[i].nodeType == 1){
-                        THmo_doHighlight3(mutation.addedNodes[i]);
+                        THmo_doHighlight(mutation.addedNodes[i], personalCfg, 'keywordsPersonal', 'highlightStylePersonal');
                     }
                 }
             });
@@ -541,51 +492,8 @@ referenceNode1.after(recbutton);
         var opts3 = {childList: true, subtree: true};
         THmo_chgMon3.observe(document.body, opts3);
     }
-    // Main workhorse routine
-    function THmo_doHighlight3(el){
 
-        var keywords3 = personalCfg.get('keywordsPersonal');
-        if(!keywords3)  { return; }  // end execution if not found
-        let sep = ',';
-        var pat1 = new RegExp('\\s*' + sep + '+\\s*', 'g'); // trim space/s around separator & trim repeated separator
-        var pat2 = new RegExp('(?:^' + sep + '+|' + sep + '+$)', 'g'); // trim starting & trailing separator
-        keywords3 = keywords3.replace(pat1, sep).replace(pat2, '');
-        keywords3 = keywords3.replace(/\s{2,}/g, ' ').trim();
-
-        var highlightStyle3 = personalCfg.get('highlightStylePersonal');
-
-        var rQuantifiers = /[-\/\\^$*+?.()|[\]{}]/g;
-        keywords3 = "\\b" + keywords3.replace(/\,/g, "\\b|\\b", '\\$&').split(',').join('|') + "\\b";
-        var pat = new RegExp('(' + keywords3 + ')', 'gi');
-        var span = document.createElement('span');
-        // getting all text nodes with a few exceptions
-        var snapElements = document.evaluate(
-            './/text()[normalize-space() != "" ' +
-            'and not(ancestor::style) ' +
-            'and not(ancestor::script) ' +
-            'and not(ancestor::textarea) ' +
-            'and not(ancestor::code) ' +
-            'and not(ancestor::pre)]',
-            el, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
-
-        if (!snapElements.snapshotItem(0)) { return; }  // end execution if not found
-
-        for (var i = 0, len = snapElements.snapshotLength; i < len; i++) {
-            var node = snapElements.snapshotItem(i);
-            // check if it contains the keywords
-            if (pat.test(node.nodeValue)) {
-                // check that it isn't already highlighted
-                if (node.className != "THmo" && node.parentNode.className != "THmo"){
-                    // create an element, replace the text node with an element
-                    var sp = span.cloneNode(true);
-                    sp.innerHTML = node.nodeValue.replace(pat, '<span style="' + highlightStyle3 + '" class="THmo">$1</span>');
-                    node.parentNode.replaceChild(sp, node);
-                }
-            }
-        }
-    }
-    // first run
-    THmo_doHighlight3(document.body);
+    THmo_doHighlight(document.body, personalCfg, 'keywordsPersonal', 'highlightStylePersonal');
 })(); // end of anonymous function
 
 // chat window manage
