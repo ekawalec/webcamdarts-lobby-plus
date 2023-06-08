@@ -18,7 +18,6 @@
 // ==/UserScript==
 
 
-
 const UNREAD_MESSAGES_TIMEOUT = 1000;
 const TABS_CHECK_INTERVAL = 7000;
 
@@ -648,9 +647,8 @@ debugMode();
         var referenceNode1 = document.querySelector('#SendMessage');
         referenceNode1.after(recbutton);
 
-        $('.motdcont').show('fast');
+        $(".motds").detach().appendTo(".messages-container");
 
     }, 3000);
 
 })();
-
