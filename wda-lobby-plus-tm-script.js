@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.40
+// @version      1.41
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. 
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu.
 // @author       Edmund Kawalec
@@ -669,13 +669,15 @@ debugMode();
             let text = node.text();
             let test = text.indexOf(v) >= 0;
             if (test === true) {
-                let _username = text.replace(v, '');
-                let _color = '';
-                let _class = 'player';
-                let _player = $('#users').find(".rMenu.userli[value='"+_username+"']").find('.userinfo');
-                _color = _player.css('color');
-                node.html('<strong style="color: '+_color+'" class="player" title="">' + _username + '</strong> ' + v);
-                consoleLog(v + ' found in: ' + node.text() + ', recognized nick:' + _username);
+                setTimeout(function() {
+                    let _username = text.replace(v, '');
+                    let _color = '';
+                    let _class = 'player';
+                    let _player = $('#users').find(".rMenu.userli[value='"+_username+"']").find('.userinfo');
+                    _color = _player.css('color');
+                    node.html('<strong style="color: '+_color+'" class="player" title="">' + _username + '</strong> ' + v);
+                    consoleLog(v + ' found in: ' + node.text() + ', recognized nick:' + _username);
+                }, 500);
             }
             return test;
         })
