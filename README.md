@@ -30,6 +30,12 @@ You can choose notification language: English, Deutsch, Polish on plugin Voice C
 Version history
 ---------------------
 
+**1.42 (2023.06.09)**
+* Added voice notification on self status change
+* some CSS issues fixed
+* som minor bugs fixed
+
+
 **1.41 (2023.06.08)**
 * Fixed non coloured player names in chat window
 
