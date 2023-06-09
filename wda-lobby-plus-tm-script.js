@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.41
+// @version      1.42
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. 
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu.
 // @author       Edmund Kawalec
@@ -44,6 +44,25 @@ var vCommands = {
         3 : 'New message from ',
         2 : 'neue Nachricht von '
     },
+    'welcome' : {
+        15: 'Witaj ',
+        3: 'Welcome ',
+        2: 'Hallo ',
+    },
+    'statuses' : {
+        'Available' : {
+            15: 'gotowy do gry',
+            3: 'ready to play ',
+            2: 'fertig zu spielen',
+        },
+        'Busy' : {
+            15: 'zajęty',
+            3: 'busy',
+            2: 'beschäftigt'
+        }
+    }
+
+
 };
 
 
@@ -100,6 +119,19 @@ function say(m) { // language 3 en
         };
         speechSynthesis.speak(msg);
     }
+}
+
+
+
+$.fn.classChange = function(cb) {
+    return $(this).each((_, el) => {
+        new MutationObserver(mutations => {
+            mutations.forEach(mutation => cb && cb(mutation.target, $(mutation.target).prop(mutation.attributeName)));
+        }).observe(el, {
+            attributes: true,
+            attributeFilter: ['class'] // only listen for class attribute changes
+        });
+    });
 }
 
 function addGlobalStyle(css) {
@@ -160,6 +192,8 @@ debugMode();
     'use strict';
     $('#current-user').append('<a class="Camtesting" href="https://game.webcamdarts.com/CamTest" target="_blank">Camtest</a>');
     $( "<a class='deco' href='javascript:doLogout()'>Logout</a>" ).appendTo( ".logout" );
+
+
 })();
 
 
@@ -504,11 +538,17 @@ debugMode();
         var dataItem = listView.dataSource.getByUid(_player.data("uid"));
         var _playerAvg = _player.find('p.fn').text();
 
-        if (_username != $('.currenuser-info').attr('value')) {
+        let _forbidden = [
+            'Game on!',
+            'WDA'
+        ];
+
+
+        if (_username != $('.currenuser-info').attr('value') && !_forbidden.includes(_username)) {
             $(e.target).removeClass('dropdown').addClass('dropdown');
             var _profileLink = '<a class="userProfile" href="https://www.webcamdarts.com/GameOn/Game/MemberStats/'+_username+'" target="_blank"><i class="fa-regular fa-user"></i> Profile</a>';
             var _chatLink = '';
-            if (dataItem!=undefined) {
+            if (dataItem != undefined) {
                 _playerAvg = '<span class="playerAvg">'+_playerAvg+'</span>';
                 _chatLink = '<a href="#" class="chatWithUser" data-username="'+_username+'"><i class="fa-regular fa-comment"></i> Chat</a>';
             } else {
@@ -518,6 +558,7 @@ debugMode();
             $(e.target).after('<div class="dropdown-content">' + _playerAvg + _chatLink + _profileLink + _closeLink + '</div>');
         }
     });
+
     $(document).on('click', '#chatWindow .chatWithUser', function(e) {
         var _username = $(e.target).data('username');
         var _player = $('#users').find(".rMenu.userli[value='"+_username+"']");
@@ -535,6 +576,7 @@ debugMode();
     $(document).on('click', '.hideMe', function(e) {
         $(this).parent('.dropdown-content').hide('fast').remove();
     });
+
 
 
 
@@ -603,7 +645,10 @@ debugMode();
         addGlobalStyle('.info-handle {width: auto; } ');
         $('.info-handle').html('<i class="fa-solid fa-chart-line"></i> STATS');
 
+        addGlobalStyle('.useropt.k-link.k-header {padding: 3px 0px; } ');
+
     }, 3000);
+
 
 })();
 
@@ -675,9 +720,9 @@ debugMode();
                     let _class = 'player';
                     let _player = $('#users').find(".rMenu.userli[value='"+_username+"']").find('.userinfo');
                     _color = _player.css('color');
-                    node.html('<strong style="color: '+_color+'" class="player" title="">' + _username + '</strong> ' + v);
+                    node.hide().html('<strong style="color: '+_color+'" class="player" title="">' + _username + '</strong> ' + v).fadeIn('fast');
                     consoleLog(v + ' found in: ' + node.text() + ', recognized nick:' + _username);
-                }, 500);
+                }, 1000);
             }
             return test;
         })
@@ -694,9 +739,14 @@ debugMode();
         recbutton.innerHTML = '<div id="recbutton" style="width:100%;height:25px; position:fixed; bottom:0px;font-size:smaller;margin-left:2px;white-space: nowrap;display: block; padding-top: 8px; padding-left: 18px; " ><a href="https://chrome.google.com/webstore/detail/recordrtc/ndcljioonkecdnaaihodjgiliohngojp" target="_blank">Record your match (save & upload youtube) with RecordRTC</a> or <a href="https://chrome.google.com/webstore/detail/webrtc-desktop-sharing/nkemblooioekjnpfekmjhpgkackcajhg" target="_blank">Stream your match (max 10 friends) with WebRTC Sharing</a> Extension for Google Chrome</div>';
         var referenceNode1 = document.querySelector('#SendMessage');
         referenceNode1.after(recbutton);
-
         $(".motds").detach().appendTo(".messages-container");
 
     }, 3000);
 
+    setTimeout(function() {
+        $('#current-user .optionContainer .useropt').click(function() {
+            let status = $(this).find('.label').text();
+            say('status ' + vCommands.statuses[status][getLang()]);
+        });
+    }, 5000);
 })();
