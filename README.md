@@ -30,7 +30,7 @@ You can choose notification language: English, Deutsch, Polish on plugin Voice C
 Version history
 ---------------------
 
-**1.42 (2023.06.09)**
+**1.43 (2023.07.06)**
 * Added voice notification on self status change
 * some CSS issues fixed
 * som minor bugs fixed
