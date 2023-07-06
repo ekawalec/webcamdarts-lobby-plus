@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.42
+// @version      1.43
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. 
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu.
 // @author       Edmund Kawalec
@@ -146,11 +146,11 @@ function addGlobalStyle(css) {
 
 
 var voiceCfg = new MonkeyConfig({
-    title: 'Voice configuration',
+    title: 'Assistant voice settings',
     menuCommand: true,
     params: {
         voiceEnable: {
-            'label': 'Enabled',
+            'label': 'Voice nEnabled',
             type: 'checkbox',
             default: true
         },
@@ -336,7 +336,7 @@ debugMode();
 
     if (window.self !== window.top) { return; } // end execution if in a frame
     var friendsCfg = new MonkeyConfig({
-        title: 'Friends configuration',
+        title: 'Friends list',
         menuCommand: true,
         params: {
             keywordsFriends: {
@@ -431,7 +431,7 @@ debugMode();
 
 
     var blackListCfg = new MonkeyConfig({
-        title: 'Black List configuration',
+        title: 'Blacklist',
         menuCommand: true,
         params: {
             keywordsBlack: {
@@ -480,11 +480,11 @@ debugMode();
 
 
     var personalCfg = new MonkeyConfig({
-        title: 'Personal configuration',
+        title: 'Custom list',
         menuCommand: true,
         params: {
             keywordsPersonal: {
-                'label': 'Personal names<br>comma separated:<br>nick 1, nick2 ,...',
+                'label': 'Players names<br>comma separated:<br>nick 1, nick2 ,...',
                 type: 'text',
                 default: ''
             },
