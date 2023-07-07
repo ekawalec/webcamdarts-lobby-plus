@@ -8,8 +8,8 @@ Script based on [Ultimate Webcamdarts Lobby by Antoine Maingeot](https://greasyf
 Lists
 ---------------------
 * Friends
-* Black
-* Personal
+* Blacklist
+* Custom
 Each list is configured with comma separated usernames and view style in CSS format.
 
 
@@ -29,6 +29,14 @@ You can choose notification language: English, Deutsch, Polish on plugin Voice C
 
 Version history
 ---------------------
+
+**1.50 (2023.07.07)**
+* include modifications for MemberStats page: opponents highlights and links
+* core code refactor
+* some CSS issues fixed
+* som minor bugs fixed
+
+
 
 **1.43 (2023.07.06)**
 * Added voice notification on self status change
