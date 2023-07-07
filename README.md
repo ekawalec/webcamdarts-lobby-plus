@@ -10,6 +10,7 @@ Lists
 * Friends
 * Blacklist
 * Custom
+
 Each list is configured with comma separated usernames and view style in CSS format.
 
 
