@@ -11,7 +11,7 @@ Lists
 * Blacklist
 * Custom
 
-Each list is configured with comma separated usernames and view style in CSS format.
+Each list can be modified with comma separated playernames and has view style in CSS format.
 
 
 Player menus
