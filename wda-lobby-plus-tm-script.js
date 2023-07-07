@@ -1,12 +1,13 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.50
+// @version      1.51
 // @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. 
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu.
 // @author       Edmund Kawalec
 // @match        https://*.webcamdarts.com/GameOn/Lobby*
 // @match        https://*.webcamdarts.com/wda-games/tournaments/*
 // @match        https://*.webcamdarts.com/GameOn/Game/MemberStats/*
+// @match        https://*.webcamdarts.com/GameOn/Game/MatchResult/*
 // @grant        GM_registerMenuCommand
 // @grant        GM_setValue
 // @grant        GM_getValue
@@ -606,6 +607,29 @@ if (urlPath.startsWith('/GameOn/Game/MemberStats/')) {
 
 
 }
+
+
+
+// mods for MatchResult
+if (urlPath.startsWith('/GameOn/Game/MatchResult/')) {
+
+    (function() {
+        'use strict';
+
+        let node = $('table.full-game-result thead tr').find('th')[1];
+        let player = $(node).text();
+        $(node).html('<a href="https://www.webcamdarts.com/GameOn/Game/MemberStats/'+player+'" target="_blank" class="playerName">'+player+'</a>');
+
+        node = $('table.full-game-result thead tr').find('th')[2];
+        player = $(node).text();
+        $(node).html('<a href="https://www.webcamdarts.com/GameOn/Game/MemberStats/'+player+'" target="_blank" class="playerName">'+player+'</a>');
+
+        addGlobalStyle('a.playerName {text-decoration: none; color: #02ede9; } a.playerName:hover {text-decoration: underline; }');
+
+    })();
+
+}
+
 
 
 
