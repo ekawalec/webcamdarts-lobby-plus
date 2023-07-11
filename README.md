@@ -35,7 +35,7 @@ Version history
 * include modifications for MemberStats and MatchResult pages: players highlights and links
 * core code refactor
 * some CSS issues fixed
-* som minor bugs fixed
+* some minor bugs fixed
 
 ......
 
