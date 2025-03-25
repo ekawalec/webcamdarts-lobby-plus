@@ -31,6 +31,12 @@ You can choose notification language: English, Deutsch, Polish on plugin Voice C
 Version history
 ---------------------
 
+**1.53 (2023.07.07)**
+* added Auto scroll chat window switch after Send message button
+
+**1.52 (2024.10.10)**
+* cleanup and optimization
+
 **1.51 (2023.07.07)**
 * include modifications for MemberStats and MatchResult pages: players highlights and links
 * core code refactor
