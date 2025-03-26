@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.53
-// @description  New design for Lobby. More Space, color for active player, Friend List & Black List. View more player in lobby and some addditonal feature. Clickable players nicks in chat window. 
-// @description:pl Nowy projekt Lobby. Więcej miejsca, kolor dla aktywnego gracza, lista znajomych i czarna lista. Zobacz więcej graczy w lobby i kilka dodatkowych funkcji. Klikalne nicki graczy w oknie czatu.
+// @version      1.6
+// @description  New design for Lobby. More Space, colors, players lists (Friends, Blacklist, Custom). View players info in chat window and more features. 
+// @description:pl Nowy projekt Lobby. Więcej miejsca, kolorów, definiowane listy graczy (znajomi, czarna lista, custom). Info o graczach dostępne w oknie czatu i kilka dodatkowych funkcji.
 // @author       Edmund Kawalec
 // @match        https://*.webcamdarts.com/GameOn/Lobby*
 // @match        https://*.webcamdarts.com/wda-games/tournaments/*
@@ -456,8 +456,9 @@ if (urlPath.startsWith('/GameOn/Lobby')) {
 
         $('#users-available-filter').parent('div').html('<label id="label-users-available-filter" for="users-available-filter"><input id="users-available-filter" type="checkbox" name="available" /> Available only</label>');
         $('#users-available-filter').parent('label').before('<input id="users-name-filter" type="text" placeholder="... search player">');
-        $('#users-name-filter').on('change, keyup', function() {
-            var _self = $(this);
+
+        function searchPlayerByName() {
+            var _self = $('#users-name-filter');
             var search = _self.val();
             if (search.length > 1 ) {
                 $('#users .rMenu.userli').hide();
@@ -469,7 +470,9 @@ if (urlPath.startsWith('/GameOn/Lobby')) {
                 $('#label-users-available-filter').show();
                 $('#users-available-filter').show();
             }
-        });
+        }
+
+        $('#users-name-filter').on('change, keyup', searchPlayerByName);
 
 
         let _chatWindow = document.getElementById("chatWindow");
@@ -554,6 +557,159 @@ if (urlPath.startsWith('/GameOn/Lobby')) {
                 say('status ' + vCommands.statuses[status][getLang()]);
             });
         }, 5000);
+
+
+        /* --------- Friends ---------*/
+        if (window.self !== window.top) { return; } // end execution if in a frame
+
+        // Main workhorse routine
+        function THmo_doHighlight(el, config, keywords, highlight){
+
+            var keywordsfriends = config.get(keywords);
+            if(!keywordsfriends)  { return; }  // end execution if not found
+            let sep = ',';
+            var pat1 = new RegExp('\\s*' + sep + '+\\s*', 'g'); // trim space/s around separator & trim repeated separator
+            var pat2 = new RegExp('(?:^' + sep + '+|' + sep + '+$)', 'g'); // trim starting & trailing separator
+            keywordsfriends = keywordsfriends.replace(pat1, sep).replace(pat2, '');
+            keywordsfriends = keywordsfriends.replace(/\s{2,}/g, ' ').trim();
+
+
+            var highlightStyleFriends = config.get(highlight);
+
+            var rQuantifiers = /[-\/\\^$*+?.()|[\]{}]/g;
+            keywordsfriends = "\\b" + keywordsfriends.replace(/\,/g, "\\b|\\b", '\\$&').split(',').join('|') + "\\b";
+            var pat = new RegExp('(' + keywordsfriends + ')', 'gi');
+            var span = document.createElement('span');
+            // getting all text nodes with a few exceptions
+            var snapElements = document.evaluate(
+                './/text()[normalize-space() != "" ' +
+                'and not(ancestor::style) ' +
+                'and not(ancestor::script) ' +
+                'and not(ancestor::textarea) ' +
+                'and not(ancestor::code) ' +
+                'and not(ancestor::pre)]',
+                el, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
+
+            if (!snapElements.snapshotItem(0)) { return; }  // end execution if not found
+
+            for (var i = 0, len = snapElements.snapshotLength; i < len; i++) {
+                var node = snapElements.snapshotItem(i);
+                // check if it contains the keywords
+                if (pat.test(node.nodeValue)) {
+                    // check that it isn't already highlighted
+                    if (node.className != "THmo" && node.parentNode.className != "THmo"){
+                        // create an element, replace the text node with an element
+                        var sp = span.cloneNode(true);
+                        sp.innerHTML = node.nodeValue.replace(pat, '<span style="' + highlightStyleFriends + '" class="THmo">$1</span>');
+                        node.parentNode.replaceChild(sp, node);
+                    }
+                }
+            }
+        }
+
+        var friendsCfg = new MonkeyConfig({
+            title: 'Friends list',
+            menuCommand: true,
+            params: {
+                keywordsFriends: {
+                    'label': 'Friends names<br>comma separated:<br>nick 1, nick2 ,...',
+                    type: 'text',
+                    default: ''
+                },
+                highlightStyleFriends: {
+                    'label': 'Set Highlight Style<br>(proper CSS)',
+                    type: 'text',
+                    default: 'color: #000; background-color: #38d60c; border-radius: 6px 6px 6px 6px; padding: 1px 2px;'
+                },
+            },
+            onSave: function (values) {
+                say(vCommands.settingsSaved[getLang()]);
+                if(!document.body.querySelector(".THmo")) {
+                    THmo_doHighlight(document.body, friendsCfg, 'keywordsFriends', 'highlightStyleFriends');
+                }
+                else {
+                    location.reload();
+                }
+            }
+        });
+        var blackListCfg = new MonkeyConfig({
+            title: 'Blacklist',
+            menuCommand: true,
+            params: {
+                keywordsBlack: {
+                    'label': 'Black List names<br>comma separated:<br>nick 1, nick2 ,...',
+                    type: 'text',
+                    default: ''
+                },
+                highlightStyleBlack: {
+                    'label': 'Set Highlight Style<br>(proper CSS)',
+                    type: 'text',
+                    default: 'color: #FFF; background-color: #000; border-radius: 6px 6px 6px 6px; padding: 1px 2px;'
+                },
+            },
+            onSave: function (values) {
+                say(vCommands.settingsSaved[getLang()]);
+                if(!document.body.querySelector(".THmo")) {
+                    THmo_doHighlight(document.body, blackListCfg, 'keywordsBlack', 'highlightStyleBlack');
+                }
+                else {
+                    location.reload();
+                }
+            }
+        });
+        var personalCfg = new MonkeyConfig({
+            title: 'Custom list',
+            menuCommand: true,
+            params: {
+                keywordsPersonal: {
+                    'label': 'Players names<br>comma separated:<br>nick 1, nick2 ,...',
+                    type: 'text',
+                    default: ''
+                },
+                highlightStylePersonal: {
+                    'label': 'Set Highlight Style<br>(proper CSS)',
+                    type: 'text',
+                    default: 'color:#f01466; font-weight:bold; background-color: #dedede; border-radius: 6px 6px 6px 6px; padding: 1px 2px;'
+                },
+            },
+            onSave: function (values) {
+                say(vCommands.settingsSaved[getLang()]);
+                if(!document.body.querySelector(".THmo")) {
+                    THmo_doHighlight(document.body, personalCfg, 'keywordsPersonal', 'highlightStylePersonal');
+                }
+                else {
+                    location.reload();
+                }
+            }
+        });
+
+
+        // Add MutationObserver to catch content added dynamically
+        var THmo_MutOb = (window.MutationObserver) ? window.MutationObserver : window.WebKitMutationObserver;
+        if (THmo_MutOb){
+            var THmo_chgMon = new THmo_MutOb(function(mutationSet){
+                mutationSet.forEach(function(mutation){
+                    for (var i=0; i<mutation.addedNodes.length; i++){
+                        if (mutation.addedNodes[i].nodeType == 1){
+                            THmo_doHighlight(mutation.addedNodes[i], friendsCfg, 'keywordsFriends', 'highlightStyleFriends');
+                            THmo_doHighlight(mutation.addedNodes[i], blackListCfg, 'keywordsBlack', 'highlightStyleBlack');
+                            THmo_doHighlight(mutation.addedNodes[i], personalCfg, 'keywordsPersonal', 'highlightStylePersonal');
+                            searchPlayerByName();
+                        }
+                    }
+                });
+            });
+            // attach chgMon to document.body
+            var opts = {childList: true, subtree: true};
+            THmo_chgMon.observe(document.body, opts);
+        }
+
+        /* --------- BLACK LIST ---------*/
+        // first run
+        THmo_doHighlight(document.body, friendsCfg, 'keywordsFriends', 'highlightStyleFriends');
+        THmo_doHighlight(document.body, blackListCfg, 'keywordsBlack', 'highlightStyleBlack');
+        THmo_doHighlight(document.body, personalCfg, 'keywordsPersonal', 'highlightStylePersonal');
+
     })();
 
 
@@ -651,201 +807,3 @@ if (urlPath.startsWith('/GameOn/Game/MatchResult/')) {
 }
 
 
-
-
-// common mods - players highlights
-(function() {
-
-
-    /* --------- Friends ---------*/
-    if (window.self !== window.top) { return; } // end execution if in a frame
-    var friendsCfg = new MonkeyConfig({
-        title: 'Friends list',
-        menuCommand: true,
-        params: {
-            keywordsFriends: {
-                'label': 'Friends names<br>comma separated:<br>nick 1, nick2 ,...',
-                type: 'text',
-                default: ''
-            },
-            highlightStyleFriends: {
-                'label': 'Set Highlight Style<br>(proper CSS)',
-                type: 'text',
-                default: 'color: #000; background-color: #38d60c; border-radius: 6px 6px 6px 6px; padding: 1px 2px;'
-            },
-        },
-        onSave: function (values) {
-            say(vCommands.settingsSaved[getLang()]);
-            if(!document.body.querySelector(".THmo")) {
-                THmo_doHighlight(document.body, friendsCfg, 'keywordsFriends', 'highlightStyleFriends');
-            }
-            else {
-                location.reload();
-            }
-        }
-    });
-
-
-    // Add MutationObserver to catch content added dynamically
-    var THmo_MutOb = (window.MutationObserver) ? window.MutationObserver : window.WebKitMutationObserver;
-    if (THmo_MutOb){
-        var THmo_chgMon = new THmo_MutOb(function(mutationSet){
-            mutationSet.forEach(function(mutation){
-                for (var i=0; i<mutation.addedNodes.length; i++){
-                    if (mutation.addedNodes[i].nodeType == 1){
-                        THmo_doHighlight(mutation.addedNodes[i], friendsCfg, 'keywordsFriends', 'highlightStyleFriends');
-                    }
-                }
-            });
-        });
-        // attach chgMon to document.body
-        var opts = {childList: true, subtree: true};
-        THmo_chgMon.observe(document.body, opts);
-    }
-
-    // Main workhorse routine
-    function THmo_doHighlight(el, config, keywords, highlight){
-
-        var keywordsfriends = config.get(keywords);
-        if(!keywordsfriends)  { return; }  // end execution if not found
-        let sep = ',';
-        var pat1 = new RegExp('\\s*' + sep + '+\\s*', 'g'); // trim space/s around separator & trim repeated separator
-        var pat2 = new RegExp('(?:^' + sep + '+|' + sep + '+$)', 'g'); // trim starting & trailing separator
-        keywordsfriends = keywordsfriends.replace(pat1, sep).replace(pat2, '');
-        keywordsfriends = keywordsfriends.replace(/\s{2,}/g, ' ').trim();
-
-
-        var highlightStyleFriends = config.get(highlight);
-
-        var rQuantifiers = /[-\/\\^$*+?.()|[\]{}]/g;
-        keywordsfriends = "\\b" + keywordsfriends.replace(/\,/g, "\\b|\\b", '\\$&').split(',').join('|') + "\\b";
-        var pat = new RegExp('(' + keywordsfriends + ')', 'gi');
-        var span = document.createElement('span');
-        // getting all text nodes with a few exceptions
-        var snapElements = document.evaluate(
-            './/text()[normalize-space() != "" ' +
-            'and not(ancestor::style) ' +
-            'and not(ancestor::script) ' +
-            'and not(ancestor::textarea) ' +
-            'and not(ancestor::code) ' +
-            'and not(ancestor::pre)]',
-            el, null, XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE, null);
-
-        if (!snapElements.snapshotItem(0)) { return; }  // end execution if not found
-
-        for (var i = 0, len = snapElements.snapshotLength; i < len; i++) {
-            var node = snapElements.snapshotItem(i);
-            // check if it contains the keywords
-            if (pat.test(node.nodeValue)) {
-                // check that it isn't already highlighted
-                if (node.className != "THmo" && node.parentNode.className != "THmo"){
-                    // create an element, replace the text node with an element
-                    var sp = span.cloneNode(true);
-                    sp.innerHTML = node.nodeValue.replace(pat, '<span style="' + highlightStyleFriends + '" class="THmo">$1</span>');
-                    node.parentNode.replaceChild(sp, node);
-                }
-            }
-        }
-    }
-
-
-    /* --------- BLACK LIST ---------*/
-    // first run
-    THmo_doHighlight(document.body, friendsCfg, 'keywordsFriends', 'highlightStyleFriends');
-
-
-    var blackListCfg = new MonkeyConfig({
-        title: 'Blacklist',
-        menuCommand: true,
-        params: {
-            keywordsBlack: {
-                'label': 'Black List names<br>comma separated:<br>nick 1, nick2 ,...',
-                type: 'text',
-                default: ''
-            },
-            highlightStyleBlack: {
-                'label': 'Set Highlight Style<br>(proper CSS)',
-                type: 'text',
-                default: 'color: #FFF; background-color: #000; border-radius: 6px 6px 6px 6px; padding: 1px 2px;'
-            },
-        },
-        onSave: function (values) {
-            say(vCommands.settingsSaved[getLang()]);
-            if(!document.body.querySelector(".THmo")) {
-                THmo_doHighlight(document.body, blackListCfg, 'keywordsBlack', 'highlightStyleBlack');
-            }
-            else {
-                location.reload();
-            }
-        }
-    });
-
-
-    // Add MutationObserver to catch content added dynamically
-    var THmo_MutOb2 = (window.MutationObserver) ? window.MutationObserver : window.WebKitMutationObserver;
-    if (THmo_MutOb2){
-        var THmo_chgMon2 = new THmo_MutOb2(function(mutationSet){
-            mutationSet.forEach(function(mutation){
-                for (var i=0; i<mutation.addedNodes.length; i++){
-                    if (mutation.addedNodes[i].nodeType == 1){
-                        THmo_doHighlight(mutation.addedNodes[i], blackListCfg, 'keywordsBlack', 'highlightStyleBlack');
-                    }
-                }
-            });
-        });
-        // attach chgMon to document.body
-        var opts2 = {childList: true, subtree: true};
-        THmo_chgMon2.observe(document.body, opts2);
-    }
-
-
-    // first run
-    THmo_doHighlight(document.body, blackListCfg, 'keywordsBlack', 'highlightStyleBlack');
-
-
-    var personalCfg = new MonkeyConfig({
-        title: 'Custom list',
-        menuCommand: true,
-        params: {
-            keywordsPersonal: {
-                'label': 'Players names<br>comma separated:<br>nick 1, nick2 ,...',
-                type: 'text',
-                default: ''
-            },
-            highlightStylePersonal: {
-                'label': 'Set Highlight Style<br>(proper CSS)',
-                type: 'text',
-                default: 'color:#f01466; font-weight:bold; background-color: #dedede; border-radius: 6px 6px 6px 6px; padding: 1px 2px;'
-            },
-        },
-        onSave: function (values) {
-            say(vCommands.settingsSaved[getLang()]);
-            if(!document.body.querySelector(".THmo")) {
-                THmo_doHighlight(document.body, personalCfg, 'keywordsPersonal', 'highlightStylePersonal');
-            }
-            else {
-                location.reload();
-            }
-        }
-    });
-
-    // Add MutationObserver to catch content added dynamically
-    var THmo_MutOb3 = (window.MutationObserver) ? window.MutationObserver : window.WebKitMutationObserver;
-    if (THmo_MutOb3){
-        var THmo_chgMon3 = new THmo_MutOb3(function(mutationSet){
-            mutationSet.forEach(function(mutation){
-                for (var i=0; i<mutation.addedNodes.length; i++){
-                    if (mutation.addedNodes[i].nodeType == 1){
-                        THmo_doHighlight(mutation.addedNodes[i], personalCfg, 'keywordsPersonal', 'highlightStylePersonal');
-                    }
-                }
-            });
-        });
-        // attach chgMon to document.body
-        var opts3 = {childList: true, subtree: true};
-        THmo_chgMon3.observe(document.body, opts3);
-    }
-
-    THmo_doHighlight(document.body, personalCfg, 'keywordsPersonal', 'highlightStylePersonal');
-
-})();
