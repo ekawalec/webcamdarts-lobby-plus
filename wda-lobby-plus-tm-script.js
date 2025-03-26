@@ -20,7 +20,7 @@
 // ==/UserScript==
 
 const UNREAD_MESSAGES_TIMEOUT = 1000;
-const TABS_CHECK_INTERVAL = 7000;
+const TABS_CHECK_INTERVAL = 5000;
 
 var speaking = 1;
 var speech_voices;
