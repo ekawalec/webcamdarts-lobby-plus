@@ -31,7 +31,7 @@ You can choose notification language: English, Deutsch, Polish on plugin Voice C
 Version history
 ---------------------
 
-**1.6 (2025.03.26)**
+**1.60 (2025.03.26)**
 * Fix problems with search players
 * script code refactor, reduce watchers and optimize speed
  
