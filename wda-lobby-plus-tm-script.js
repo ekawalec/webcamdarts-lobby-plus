@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus] 
-// @version      1.60
+// @version      1.61
 // @description  New design for Lobby. More Space, colors, players lists (Friends, Blacklist, Custom). View players info in chat window and more features. 
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolorów, definiowane listy graczy (znajomi, czarna lista, custom). Info o graczach dostępne w oknie czatu i kilka dodatkowych funkcji.
 // @author       Edmund Kawalec
@@ -446,6 +446,7 @@ if (urlPath.startsWith('/GameOn/Lobby')) {
         // fast player search
         addGlobalStyle('#users-name-filter {display: inline-block; width: 200px; margin: 4px 30px 2px 0px; padding: 2px 5px; } ');
         addGlobalStyle('label#label-users-available-filter {display: inline-block; } ');
+        addGlobalStyle('select#list-filter {display: inline-block; width: 150px; margin: 4px 30px 2px 0px; padding: 2px 5px; min-height: 23px !important; } ');
 
         $.expr[':'].icontains = $.expr.createPseudo(function(text) {
             return function(e) {
@@ -453,25 +454,36 @@ if (urlPath.startsWith('/GameOn/Lobby')) {
             };
         });
 
-        $('#users-available-filter').parent('div').html('<label id="label-users-available-filter" for="users-available-filter"><input id="users-available-filter" type="checkbox" name="available" /> Available only</label>');
-        $('#users-available-filter').parent('label').before('<input id="users-name-filter" type="text" placeholder="... search player">');
+
+        // <select id="list-filter"><option value="friendslist">Friends List</option><option value="blacklist">Blacklist</option><option value="customlist">Custom list</option></select>
+        $('#users-available-filter').parent('div').css('left', 'auto');
+        $('#users-available-filter').parent('div').css('right', '20px');
+        $('#users-available-filter').parent('div').html('<select id="list-filter"><option value="0">All</option><option value="friendslist">Friends List</option><option value="blacklist">Blacklist</option><option value="customlist">Custom list</option></select><input id="users-name-filter" type="text" placeholder="... search player"><label id="label-users-available-filter" for="users-available-filter"><input id="users-available-filter" type="checkbox" name="available" /> Available only</label>');
 
         function searchPlayerByName() {
             var _self = $('#users-name-filter');
             var search = _self.val();
             if (search.length > 1 ) {
                 $('#users .rMenu.userli').hide();
-                $('#label-users-available-filter').hide();
-                $('#users-available-filter').hide();
                 $("#users .userinfo p:first-child:icontains('"+search+"')").parents('.rMenu.userli').show();
             } else {
                 $('#users .rMenu.userli').show();
-                $('#label-users-available-filter').show();
-                $('#users-available-filter').show();
             }
         }
 
         $('#users-name-filter').on('change, keyup', searchPlayerByName);
+
+
+        function searchPlayersByList() {
+            let val = $('#list-filter').find(":selected").val();
+            if (val != 0) {
+                $('#users .rMenu.userli').hide();
+                $('#users .userinfo p:first-child span span[data-type="'+val+'"]').parents('.rMenu.userli').show();
+            } else {
+                $('#users .rMenu.userli').show();
+            }
+        }
+        $('#list-filter').on('change', searchPlayersByList);
 
 
         let _chatWindow = document.getElementById("chatWindow");
@@ -557,22 +569,22 @@ if (urlPath.startsWith('/GameOn/Lobby')) {
         if (window.self !== window.top) { return; } // end execution if in a frame
 
         // Main workhorse routine
-        function THmo_doHighlight(el, config, keywords, highlight){
+        function playersHighlight(el, config, keywords, highlight, type){
 
-            var keywordsfriends = config.get(keywords);
-            if(!keywordsfriends)  { return; }  // end execution if not found
+            var kwords = config.get(keywords);
+            if(!kwords)  { return; }  // end execution if not found
             let sep = ',';
             var pat1 = new RegExp('\\s*' + sep + '+\\s*', 'g'); // trim space/s around separator & trim repeated separator
             var pat2 = new RegExp('(?:^' + sep + '+|' + sep + '+$)', 'g'); // trim starting & trailing separator
-            keywordsfriends = keywordsfriends.replace(pat1, sep).replace(pat2, '');
-            keywordsfriends = keywordsfriends.replace(/\s{2,}/g, ' ').trim();
+            kwords = kwords.replace(pat1, sep).replace(pat2, '');
+            kwords = kwords.replace(/\s{2,}/g, ' ').trim();
 
 
-            var highlightStyleFriends = config.get(highlight);
+            var highlightStyle = config.get(highlight);
 
             var rQuantifiers = /[-\/\\^$*+?.()|[\]{}]/g;
-            keywordsfriends = "\\b" + keywordsfriends.replace(/\,/g, "\\b|\\b", '\\$&').split(',').join('|') + "\\b";
-            var pat = new RegExp('(' + keywordsfriends + ')', 'gi');
+            kwords = "\\b" + kwords.replace(/\,/g, "\\b|\\b", '\\$&').split(',').join('|') + "\\b";
+            var pat = new RegExp('(' + kwords + ')', 'gi');
             var span = document.createElement('span');
             // getting all text nodes with a few exceptions
             var snapElements = document.evaluate(
@@ -594,7 +606,7 @@ if (urlPath.startsWith('/GameOn/Lobby')) {
                     if (node.className != "THmo" && node.parentNode.className != "THmo"){
                         // create an element, replace the text node with an element
                         var sp = span.cloneNode(true);
-                        sp.innerHTML = node.nodeValue.replace(pat, '<span style="' + highlightStyleFriends + '" class="THmo">$1</span>');
+                        sp.innerHTML = node.nodeValue.replace(pat, '<span data-type="'+type+'" style="' + highlightStyle + '" class="THmo">$1</span>');
                         node.parentNode.replaceChild(sp, node);
                     }
                 }
@@ -619,7 +631,7 @@ if (urlPath.startsWith('/GameOn/Lobby')) {
             onSave: function (values) {
                 say(vCommands.settingsSaved[getLang()]);
                 if(!document.body.querySelector(".THmo")) {
-                    THmo_doHighlight(document.body, friendsCfg, 'keywordsFriends', 'highlightStyleFriends');
+                    playersHighlight(document.body, friendsCfg, 'keywordsFriends', 'highlightStyleFriends');
                 }
                 else {
                     location.reload();
@@ -644,7 +656,7 @@ if (urlPath.startsWith('/GameOn/Lobby')) {
             onSave: function (values) {
                 say(vCommands.settingsSaved[getLang()]);
                 if(!document.body.querySelector(".THmo")) {
-                    THmo_doHighlight(document.body, blackListCfg, 'keywordsBlack', 'highlightStyleBlack');
+                    playersHighlight(document.body, blackListCfg, 'keywordsBlack', 'highlightStyleBlack');
                 }
                 else {
                     location.reload();
@@ -669,7 +681,7 @@ if (urlPath.startsWith('/GameOn/Lobby')) {
             onSave: function (values) {
                 say(vCommands.settingsSaved[getLang()]);
                 if(!document.body.querySelector(".THmo")) {
-                    THmo_doHighlight(document.body, personalCfg, 'keywordsPersonal', 'highlightStylePersonal');
+                    playersHighlight(document.body, personalCfg, 'keywordsPersonal', 'highlightStylePersonal');
                 }
                 else {
                     location.reload();
@@ -685,10 +697,11 @@ if (urlPath.startsWith('/GameOn/Lobby')) {
                 mutationSet.forEach(function(mutation){
                     for (var i=0; i<mutation.addedNodes.length; i++){
                         if (mutation.addedNodes[i].nodeType == 1){
-                            THmo_doHighlight(mutation.addedNodes[i], friendsCfg, 'keywordsFriends', 'highlightStyleFriends');
-                            THmo_doHighlight(mutation.addedNodes[i], blackListCfg, 'keywordsBlack', 'highlightStyleBlack');
-                            THmo_doHighlight(mutation.addedNodes[i], personalCfg, 'keywordsPersonal', 'highlightStylePersonal');
+                            playersHighlight(mutation.addedNodes[i], friendsCfg, 'keywordsFriends', 'highlightStyleFriends', 'friendslist');
+                            playersHighlight(mutation.addedNodes[i], blackListCfg, 'keywordsBlack', 'highlightStyleBlack', 'blacklist');
+                            playersHighlight(mutation.addedNodes[i], personalCfg, 'keywordsPersonal', 'highlightStylePersonal', 'personallist');
                             searchPlayerByName();
+                            searchPlayersByList();
                         }
                     }
                 });
@@ -700,9 +713,9 @@ if (urlPath.startsWith('/GameOn/Lobby')) {
 
         /* --------- BLACK LIST ---------*/
         // first run
-        THmo_doHighlight(document.body, friendsCfg, 'keywordsFriends', 'highlightStyleFriends');
-        THmo_doHighlight(document.body, blackListCfg, 'keywordsBlack', 'highlightStyleBlack');
-        THmo_doHighlight(document.body, personalCfg, 'keywordsPersonal', 'highlightStylePersonal');
+        playersHighlight(document.body, friendsCfg, 'keywordsFriends', 'highlightStyleFriends', 'friendslist');
+        playersHighlight(document.body, blackListCfg, 'keywordsBlack', 'highlightStyleBlack', 'blacklist');
+        playersHighlight(document.body, personalCfg, 'keywordsPersonal', 'highlightStylePersonal', 'personallist');
 
     })();
 
