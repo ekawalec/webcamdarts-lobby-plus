@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Webcamdarts Lobby [plus]
-// @version      1.6
+// @version      1.60
 // @description  New design for Lobby. More Space, colors, players lists (Friends, Blacklist, Custom). View players info in chat window and more features. 
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolorów, definiowane listy graczy (znajomi, czarna lista, custom). Info o graczach dostępne w oknie czatu i kilka dodatkowych funkcji.
 // @author       Edmund Kawalec
