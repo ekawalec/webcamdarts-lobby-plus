@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Webcamdarts Lobby [plus]
+// @name         Webcamdarts Lobby [plus] 
 // @version      1.60
 // @description  New design for Lobby. More Space, colors, players lists (Friends, Blacklist, Custom). View players info in chat window and more features. 
 // @description:pl Nowy projekt Lobby. Więcej miejsca, kolorów, definiowane listy graczy (znajomi, czarna lista, custom). Info o graczach dostępne w oknie czatu i kilka dodatkowych funkcji.
@@ -187,7 +187,7 @@ debugMode();
 
 
 
-// mods for Lobby
+// mods for page Lobby
 if (urlPath.startsWith('/GameOn/Lobby')) {
 
     // INIT
@@ -374,8 +374,6 @@ if (urlPath.startsWith('/GameOn/Lobby')) {
         });
 
 
-
-
         var lastUnreadCounter = 0;
         var unreadMessagesCounter = 0;
         const intervalID = setInterval(chatTabsCheck, TABS_CHECK_INTERVAL); //setInterval(chatTabsCheck, 500, "Parameter 1", "Parameter 2");
@@ -413,6 +411,7 @@ if (urlPath.startsWith('/GameOn/Lobby')) {
         //current user tile mod
         $('#current-user').hide();
 
+        // mods for logged user section 
         setTimeout(function() {
             $('#current-user .logout').children('a').eq(0).attr('title', 'Profile').addClass('mr-5').html('<small><i class="fa-regular fa-user"></i> profile</small>');
             $('#current-user .logout').children('a').eq(1).attr('title', 'Stats').addClass('ml-5').addClass('mr-5').html('<small><i class="fa-solid fa-chart-line"></i> stats</small>');
@@ -525,7 +524,7 @@ if (urlPath.startsWith('/GameOn/Lobby')) {
 
 
 
-        // footer
+        // mod for chat footer
         setTimeout(function() {
 
             let scrollSwitchLabel = document.createElement("label");
@@ -542,11 +541,6 @@ if (urlPath.startsWith('/GameOn/Lobby')) {
             let sendButton = document.querySelector('#SendMessage');
             sendButton.after(scrollSwitchLabel);
 
-
-            //var recbutton = document.createElement("div");
-            //recbutton.innerHTML = '<div id="recbutton" style="width:100%;height:25px; position:fixed; bottom:0px;font-size:smaller;margin-left:2px;white-space: nowrap;display: block; padding-top: 8px; padding-left: 18px; " ><a href="https://chrome.google.com/webstore/detail/recordrtc/ndcljioonkecdnaaihodjgiliohngojp" target="_blank">Record your match (save & upload youtube) with RecordRTC</a> or <a href="https://chrome.google.com/webstore/detail/webrtc-desktop-sharing/nkemblooioekjnpfekmjhpgkackcajhg" target="_blank">Stream your match (max 10 friends) with WebRTC Sharing</a> Extension for Google Chrome</div>';
-            //var referenceNode1 = document.querySelector('#SendMessage');
-            //referenceNode1.after(recbutton);
             $(".motds").detach().appendTo(".messages-container");
 
         }, 3000);
@@ -718,7 +712,7 @@ if (urlPath.startsWith('/GameOn/Lobby')) {
 
 
 
-// mods for MemberStats
+// mods for page MemberStats
 if (urlPath.startsWith('/GameOn/Game/MemberStats/')) {
 
 
@@ -768,8 +762,7 @@ if (urlPath.startsWith('/GameOn/Game/MemberStats/')) {
 
         };
 
-
-        // CSS
+        // additional CSS
         addGlobalStyle('#panelBarStats table.full-game-result tbody tr:first-child td {font-size: 1.4em; color: #04d81d; }');
         addGlobalStyle('a.game {text-decoration: none; color: #efefef; } a.game:hover {text-decoration: underline; }');
         addGlobalStyle('a.playerName {text-decoration: none; color: #02ede9; } a.playerName:hover {text-decoration: underline; }');
@@ -777,16 +770,12 @@ if (urlPath.startsWith('/GameOn/Game/MemberStats/')) {
         addGlobalStyle('td.win {text-decoration: none; color: #04d81d; }');
         addGlobalStyle('td.lost {text-decoration: none; color: #ea6969; }');
 
-
-
     })();
 
 
 }
 
-
-
-// mods for MatchResult
+// mods for page MatchResult
 if (urlPath.startsWith('/GameOn/Game/MatchResult/')) {
 
     (function() {
