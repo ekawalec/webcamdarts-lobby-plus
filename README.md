@@ -31,7 +31,11 @@ You can choose notification language: English, Deutsch, Polish on plugin Voice C
 Version history
 ---------------------
 
-**1.53 (2023.07.07)**
+**1.6 (2025.03.26)**
+* Fix problems with search players
+* script code refactor, reduce watchers and optimize speed
+ 
+**1.53 (2025.03.25)**
 * added Auto scroll chat window switch after Send message button
 
 **1.52 (2024.10.10)**
